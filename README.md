@@ -1,11 +1,11 @@
 # 0x16 C Simple shell Project
-This is agroup project at ALX Software Engineering Programme. We are  aiming at coming up with a UNICX command line interpreter.
+This is agroup project at ALX Software Engineering Programme. We are  aiming at coming up with a UNIX command line interpreter.
 
 ## Project Details
 - **Project Title:** 0x16. C - Simple Shell
 - **Language:** C
 - **Project Duration:** November 1, 2023 - November 16, 2023
-- **Team Members:** Mervitz Vitalis, Precious Masuku
+- **Team Members:** Amakalu Vitalis, Precious Masuku
 
 ## Background Context
 The simple shell project is a cornerstone in learning how to program in c and understanding how the shell in an Operating System works(UNIX).
@@ -69,6 +69,6 @@ Tests should be performed both in interactive and non-interactive mode.
 -
 
 ## Authors
-- Mervitz Vitalis
+- Amakalu Vitalis
 - Precious Masuku
 
