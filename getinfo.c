@@ -1,8 +1,76 @@
 #include "shell.h"
 
 /**
- * clear_info - initializes info_t struct
- * @info: struct address
+ * release_info_resources - deallocates memory of info_t struct fields
+ * @info: reference to the shell state structure
+ * @all: flag to indicate if all or partial resources should be freed
+ *
+ * This function is responsible for freeing the memory allocated to fields within the info_t structure.
+ * It can selectively free all or part of the resources based on the 'all' flag.
+ */
+void free_info(info_t *info, int all)
+{
+	ffree(info->argv); // Frees array of strings.
+	info->argv = NULL;
+	info->path = NULL;
+	if (all)
+	{
+		if (!info->cmd_buf)
+			free(info->arg); // Frees argument buffer if not using cmd_buf.
+		if (info->env)
+			free_list(&(info->env)); // Frees the entire environment list.
+		if (info->history)
+			free_list(&(info->history)); // Frees history list.
+		if (info->alias)
+			free_list(&(info->alias)); // Frees alias list.
+		ffree(info->environ); // Frees environment strings array.
+		info->environ = NULL;
+		bfree((void **)info->cmd_buf); // Frees command buffer if allocated.
+		if (info->readfd > 2)
+			close(info->readfd); // Closes file descriptor if valid.
+		_putchar(BUF_FLUSH); // Flushes the output buffer.
+	}
+}
+
+/**
+ * establish_info - sets up the info_t struct with command line arguments
+ * @info: pointer to the shell state structure
+ * @av: argument vector from main
+ *
+ * This function initializes the info_t structure with the filename and processes any arguments
+ * present in the info->arg field by tokenizing them into info->argv and performing variable and alias replacement.
+ */
+void set_info(info_t *info, char **av)
+{
+	int i;
+
+	info->fname = av[0]; // Sets the filename of the shell executable.
+	if (info->arg)
+	{
+		info->argv = strtow(info->arg, " \t"); // Tokenizes the arguments.
+		if (!info->argv) // Handles memory allocation failure during tokenization.
+		{
+			info->argv = malloc(sizeof(char *) * 2);
+			if (info->argv)
+			{
+				info->argv[0] = _strdup(info->arg); // Duplicates the argument.
+				info->argv[1] = NULL; // Sets the end of the vector.
+			}
+		}
+		for (i = 0; info->argv && info->argv[i]; i++); // Counts the arguments.
+		info->argc = i; // Sets the argument count.
+		
+		replace_alias(info); // Replaces any aliases in the arguments.
+		replace_vars(info); // Replaces any variables in the arguments.
+	}
+}
+
+/**
+ * reset_info - resets the fields of info_t struct to default states
+ * @info: reference to the shell state structure
+ *
+ * Resets the various fields within the info_t structure in preparation for processing a new command.
+ * This function is typically called at the start of a new command loop.
  */
 void clear_info(info_t *info)
 {
@@ -10,65 +78,4 @@ void clear_info(info_t *info)
 	info->argv = NULL;
 	info->path = NULL;
 	info->argc = 0;
-}
-
-/**
- * set_info - initializes info_t struct
- * @info: struct address
- * @av: argument vector
- */
-void set_info(info_t *info, char **av)
-{
-	int i = 0;
-
-	info->fname = av[0];
-	if (info->arg)
-	{
-		info->argv = strtow(info->arg, " \t");
-		if (!info->argv)
-		{
-
-			info->argv = malloc(sizeof(char *) * 2);
-			if (info->argv)
-			{
-				info->argv[0] = _strdup(info->arg);
-				info->argv[1] = NULL;
-			}
-		}
-		for (i = 0; info->argv && info->argv[i]; i++)
-			;
-		info->argc = i;
-
-		replace_alias(info);
-		replace_vars(info);
-	}
-}
-
-/**
- * free_info - frees info_t struct fields
- * @info: struct address
- * @all: true if freeing all fields
- */
-void free_info(info_t *info, int all)
-{
-	ffree(info->argv);
-	info->argv = NULL;
-	info->path = NULL;
-	if (all)
-	{
-		if (!info->cmd_buf)
-			free(info->arg);
-		if (info->env)
-			free_list(&(info->env));
-		if (info->history)
-			free_list(&(info->history));
-		if (info->alias)
-			free_list(&(info->alias));
-		ffree(info->environ);
-			info->environ = NULL;
-		bfree((void **)info->cmd_buf);
-		if (info->readfd > 2)
-			close(info->readfd);
-		_putchar(BUF_FLUSH);
-	}
 }
