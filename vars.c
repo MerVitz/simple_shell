@@ -1,108 +1,26 @@
 #include "shell.h"
 
 /**
- * is_chain - test if current char in buffer is a chain delimeter
- * @info: the parameter struct
- * @buf: the char buffer
- * @p: address of current position in buf
+ * swap_string - substitutes one string for another
+ * @old: pointer to the string to be replaced
+ * @new: string to replace with
  *
- * Return: 1 if chain delimeter, 0 otherwise
+ * This function replaces the contents of the pointer to the old string with a new string
+ * and deallocates the memory for the old string. It returns 1 to indicate the operation was successful.
  */
-int is_chain(info_t *info, char *buf, size_t *p)
+int replace_string(char **old, char *new)
 {
-	size_t j = *p;
-
-	if (buf[j] == '|' && buf[j + 1] == '|')
-	{
-		buf[j] = 0;
-		j++;
-		info->cmd_buf_type = CMD_OR;
-	}
-	else if (buf[j] == '&' && buf[j + 1] == '&')
-	{
-		buf[j] = 0;
-		j++;
-		info->cmd_buf_type = CMD_AND;
-	}
-	else if (buf[j] == ';') /* found end of this command */
-	{
-		buf[j] = 0; /* replace semicolon with null */
-		info->cmd_buf_type = CMD_CHAIN;
-	}
-	else
-		return (0);
-	*p = j;
+	free(*old);
+	*old = new;
 	return (1);
 }
 
 /**
- * check_chain - checks we should continue chaining based on last status
- * @info: the parameter struct
- * @buf: the char buffer
- * @p: address of current position in buf
- * @i: starting position in buf
- * @len: length of buf
+ * insert_variables - substitutes variables within the command arguments
+ * @info: context containing shell information, including variables
  *
- * Return: Void
- */
-void check_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
-{
-	size_t j = *p;
-
-	if (info->cmd_buf_type == CMD_AND)
-	{
-		if (info->status)
-		{
-			buf[i] = 0;
-			j = len;
-		}
-	}
-	if (info->cmd_buf_type == CMD_OR)
-	{
-		if (!info->status)
-		{
-			buf[i] = 0;
-			j = len;
-		}
-	}
-
-	*p = j;
-}
-
-/**
- * replace_alias - replaces an aliases in the tokenized string
- * @info: the parameter struct
- *
- * Return: 1 if replaced, 0 otherwise
- */
-int replace_alias(info_t *info)
-{
-	int i;
-	list_t *node;
-	char *p;
-
-	for (i = 0; i < 10; i++)
-	{
-		node = node_starts_with(info->alias, info->argv[0], '=');
-		if (!node)
-			return (0);
-		free(info->argv[0]);
-		p = _strchr(node->str, '=');
-		if (!p)
-			return (0);
-		p = _strdup(p + 1);
-		if (!p)
-			return (0);
-		info->argv[0] = p;
-	}
-	return (1);
-}
-
-/**
- * replace_vars - replaces vars in the tokenized string
- * @info: the parameter struct
- *
- * Return: 1 if replaced, 0 otherwise
+ * Scans through the argument list, replacing any recognized variables with their values.
+ * Unrecognized variables are replaced with an empty string. It always returns 0.
  */
 int replace_vars(info_t *info)
 {
@@ -134,21 +52,100 @@ int replace_vars(info_t *info)
 			continue;
 		}
 		replace_string(&info->argv[i], _strdup(""));
-
 	}
 	return (0);
 }
 
 /**
- * replace_string - replaces string
- * @old: address of old string
- * @new: new string
+ * swap_aliases - seeks and replaces aliases in the tokenized command
+ * @info: context containing shell information, including aliases
  *
- * Return: 1 if replaced, 0 otherwise
+ * Iterates over the aliases list and replaces any matching first argument of the command
+ * with its corresponding alias value. Returns 1 if an alias was replaced, 0 otherwise.
  */
-int replace_string(char **old, char *new)
+int replace_alias(info_t *info)
 {
-	free(*old);
-	*old = new;
+	int i;
+	list_t *node;
+	char *p;
+
+	for (i = 0; i < 10; i++) // Iterate up to 10 times to resolve nested aliases
+	{
+		node = node_starts_with(info->alias, info->argv[0], '=');
+		if (!node)
+			return (0);
+		free(info->argv[0]);
+		p = _strchr(node->str, '=');
+		if (!p)
+			return (0);
+		p = _strdup(p + 1);
+		if (!p)
+			return (0);
+		info->argv[0] = p;
+	}
+	return (1);
+}
+
+/**
+ * verify_chain - assesses the need to proceed with command chaining
+ * @info: context containing shell information and status
+ * @buf: buffer containing the command chain
+ * @p: pointer to the current buffer index
+ * @i: index in the buffer to check from
+ * @len: total length of the buffer
+ *
+ * This function determines whether to break out of a command chain based on the result of the last command.
+ * It modifies the buffer to terminate the chain if necessary.
+ */
+void check_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
+{
+	size_t j = *p;
+
+	if (info->cmd_buf_type == CMD_AND && info->status)
+	{
+		buf[i] = 0;
+		j = len;
+	}
+	else if (info->cmd_buf_type == CMD_OR && !info->status)
+	{
+		buf[i] = 0;
+		j = len;
+	}
+	*p = j;
+}
+
+/**
+ * detect_chain - identifies command separators such as &&, ||, ;
+ * @info: context containing shell information
+ * @buf: command buffer to be parsed
+ * @p: pointer to current position in the buffer
+ *
+ * Checks for the presence of a chain delimiter in the command buffer and updates the parsing state accordingly.
+ * It returns 1 if a delimiter is found, otherwise 0.
+ */
+int is_chain(info_t *info, char *buf, size_t *p)
+{
+	size_t j = *p;
+
+	if (buf[j] == '|' && buf[j + 1] == '|')
+	{
+		buf[j] = 0;
+		j++;
+		info->cmd_buf_type = CMD_OR;
+	}
+	else if (buf[j] == '&' && buf[j + 1] == '&')
+	{
+		buf[j] = 0;
+		j++;
+		info->cmd_buf_type = CMD_AND;
+	}
+	else if (buf[j] == ';')
+	{
+		buf[j] = 0;
+		info->cmd_buf_type = CMD_CHAIN;
+	}
+	else
+		return (0);
+	*p = j;
 	return (1);
 }
