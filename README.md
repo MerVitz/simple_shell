@@ -1,5 +1,5 @@
 # 0x16 C Simple shell Project
-This is agroup project at ALX Software Engineering Programme. We are  aiming at coming up with a UNICX command line interpreter.
+This is agroup project at ALX Software Engineering Programme. We are  aiming at coming up with a UNIX command line interpreter.
 
 ## Project Details
 - **Project Title:** 0x16. C - Simple Shell
