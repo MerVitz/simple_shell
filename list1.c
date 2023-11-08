@@ -1,17 +1,68 @@
 #include "shell.h"
 
 /**
- * list_len - determines length of linked list
- * @h: pointer to first node
+ * retrieve_node_index - fetches the position of a node in a list
+ * @head: pointer to the start of the list
+ * @node: the specific node to find the index for
  *
- * Return: size of list
+ * This function traverses the list from the beginning to locate the node in question,
+ * returning the zero-based index of its position within the list.
  */
-size_t list_len(const list_t *h)
+ssize_t get_node_index(list_t *head, list_t *node)
+{
+	size_t i = 0;
+
+	while (head)
+	{
+		if (head == node)
+			return (i);
+		head = head->next;
+		i++;
+	}
+	return (-1);
+}
+
+/**
+ * find_node_prefix - locates a node where the string begins with a specified prefix
+ * @node: starting node for the search
+ * @prefix: leading characters to match in the node's string
+ * @c: character that must follow the prefix for a successful match
+ *
+ * Searches through a linked list and returns the first node where the string matches the prefix
+ * followed by the specified character, or NULL if no match is found.
+ */
+list_t *node_starts_with(list_t *node, char *prefix, char c)
+{
+	char *p = NULL;
+
+	while (node)
+	{
+		p = starts_with(node->str, prefix);
+		if (p && ((c == -1) || (*p == c)))
+			return (node);
+		node = node->next;
+	}
+	return (NULL);
+}
+
+/**
+ * echo_list - outputs the contents of a linked list
+ * @h: pointer to the start of the list
+ *
+ * Iterates over a linked list and prints each element's index and string to standard output.
+ * Returns the number of elements printed.
+ */
+size_t print_list(const list_t *h)
 {
 	size_t i = 0;
 
 	while (h)
 	{
+		_puts(convert_number(h->num, 10, 0));
+		_putchar(':');
+		_putchar(' ');
+		_puts(h->str ? h->str : "(nil)");
+		_puts("\n");
 		h = h->next;
 		i++;
 	}
@@ -19,10 +70,11 @@ size_t list_len(const list_t *h)
 }
 
 /**
- * list_to_strings - returns an array of strings of the list->str
- * @head: pointer to first node
+ * list_to_array - converts a linked list to an array of strings
+ * @head: pointer to the start of the list
  *
- * Return: array of strings
+ * Creates a new array of strings by duplicating the strings stored in each element of the list.
+ * Returns a pointer to the array or NULL if the allocation fails.
  */
 char **list_to_strings(list_t *head)
 {
@@ -54,69 +106,21 @@ char **list_to_strings(list_t *head)
 	return (strs);
 }
 
-
 /**
- * print_list - prints all elements of a list_t linked list
- * @h: pointer to first node
+ * count_list - calculates the total number of nodes in a linked list
+ * @h: pointer to the first node of the list
  *
- * Return: size of list
+ * Tallies the number of nodes in a linked list from the first node to the end.
+ * Returns the count as a size_t value.
  */
-size_t print_list(const list_t *h)
+size_t list_len(const list_t *h)
 {
 	size_t i = 0;
 
 	while (h)
 	{
-		_puts(convert_number(h->num, 10, 0));
-		_putchar(':');
-		_putchar(' ');
-		_puts(h->str ? h->str : "(nil)");
-		_puts("\n");
 		h = h->next;
 		i++;
 	}
 	return (i);
-}
-
-/**
- * node_starts_with - returns node whose string starts with prefix
- * @node: pointer to list head
- * @prefix: string to match
- * @c: the next character after prefix to match
- *
- * Return: match node or null
- */
-list_t *node_starts_with(list_t *node, char *prefix, char c)
-{
-	char *p = NULL;
-
-	while (node)
-	{
-		p = starts_with(node->str, prefix);
-		if (p && ((c == -1) || (*p == c)))
-			return (node);
-		node = node->next;
-	}
-	return (NULL);
-}
-
-/**
- * get_node_index - gets the index of a node
- * @head: pointer to list head
- * @node: pointer to the node
- *
- * Return: index of node or -1
- */
-ssize_t get_node_index(list_t *head, list_t *node)
-{
-	size_t i = 0;
-
-	while (head)
-	{
-		if (head == node)
-			return (i);
-		head = head->next;
-		i++;
-	}
-	return (-1);
 }
