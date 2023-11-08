@@ -1,15 +1,80 @@
 #include "shell.h"
 
 /**
- * char_output - outputs a single character to standard output
- * @c: the character to be printed
+ * replicate_string - duplicates the content of one string to another location
+ * @dest: target location where the string will be copied
+ * @src: source string to be copied
  *
- * This function buffers characters and prints them in a batch to improve performance.
- * The buffer is flushed either when it's full or when a flush command is received.
+ * This function replicates the content of the source string into the destination buffer,
+ * ensuring the destination has a copy of the string. The function returns the destination pointer.
+ */
+char *_strcpy(char *dest, char *src)
+{
+	int i = 0;
+
+	if (dest == src || !src)
+		return (dest);
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+/**
+ * generate_duplicate - generates a new memory allocation containing the same string
+ * @str: the original string to duplicate
+ *
+ * This function allocates new memory and copies the input string into it,
+ * returning a pointer to the newly allocated duplicate.
+ */
+char *_strdup(const char *str)
+{
+	int length = 0;
+	char *ret;
+
+	if (!str)
+		return (NULL);
+	while (str[length])
+		length++;
+	ret = malloc(sizeof(char) * (length + 1));
+	if (!ret)
+		return (NULL);
+	_strcpy(ret, str);
+	return (ret);
+}
+
+/**
+ * echo_string - prints a given string to standard output
+ * @str: the string to be echoed
+ *
+ * By invoking the character-wise output function, this function writes an entire string to stdout.
+ */
+void _puts(char *str)
+{
+	int i = 0;
+
+	if (!str)
+		return;
+	while (str[i])
+	{
+		_putchar(str[i]);
+		i++;
+	}
+}
+
+/**
+ * buffered_char_output - writes characters to stdout with buffering capabilities
+ * @c: character to be printed, or control character to manage the buffer
+ *
+ * This function manages a static buffer to collect characters and writes them to stdout
+ * in a batch. It's designed to be efficient by reducing the number of write calls.
  */
 int _putchar(char c)
 {
-	static int i;
+	static int i = 0;
 	static char buf[WRITE_BUF_SIZE];
 
 	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
@@ -20,70 +85,4 @@ int _putchar(char c)
 	if (c != BUF_FLUSH)
 		buf[i++] = c;
 	return (1);
-}
-
-/**
- * print_string - displays a string to standard output
- * @str: the string to be output
- *
- * This function sends a string to the _putchar function character by character.
- */
-void _puts(char *str)
-{
-	int i = 0;
-
-	if (!str)
-		return;
-	while (str[i] != '\0')
-	{
-		_putchar(str[i]);
-		i++;
-	}
-}
-
-/**
- * string_clone - creates a copy of the given string
- * @str: the string to be cloned
- *
- * Allocates memory for a new copy of the string, and returns a pointer to it.
- * The memory must be freed by the caller.
- */
-char *_strdup(const char *str)
-{
-	int length = 0;
-	char *ret;
-
-	if (str == NULL)
-		return (NULL);
-	while (*str++)
-		length++;
-	ret = malloc(sizeof(char) * (length + 1));
-	if (!ret)
-		return (NULL);
-	for (length++; length--;)
-		ret[length] = *--str;
-	return (ret);
-}
-
-/**
- * string_copy - copies a string from source to destination
- * @dest: buffer to copy the string to
- * @src: the string to be copied
- *
- * After copying, the destination string is returned. The caller must ensure
- * that the destination buffer is large enough to hold the source string.
- */
-char *_strcpy(char *dest, char *src)
-{
-	int i = 0;
-
-	if (dest == src || src == 0)
-		return (dest);
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = 0;
-	return (dest);
 }
