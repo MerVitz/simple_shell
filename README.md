@@ -69,6 +69,6 @@ Tests should be performed both in interactive and non-interactive mode.
 -
 
 ## Authors
-- Mervitz Vitalis
+- Amakalu Vitalis
 - Precious Masuku
 
