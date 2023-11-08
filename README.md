@@ -5,7 +5,7 @@ This is agroup project at ALX Software Engineering Programme. We are  aiming at 
 - **Project Title:** 0x16. C - Simple Shell
 - **Language:** C
 - **Project Duration:** November 1, 2023 - November 16, 2023
-- **Team Members:** Mervitz Vitalis, Precious Masuku
+- **Team Members:** Amakalu Vitalis, Precious Masuku
 
 ## Background Context
 The simple shell project is a cornerstone in learning how to program in c and understanding how the shell in an Operating System works(UNIX).
