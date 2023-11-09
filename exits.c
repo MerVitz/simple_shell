@@ -1,73 +1,69 @@
 #include "shell.h"
 
 /**
- * locate_char - searches for the first occurrence of a character in a string
- * @s: the string to be searched
- * @c: the character to find
+ * copy_partial_string - replicates a subset of a source string to a destination
+ * @dest: the target buffer for copying
+ * @src: the original string from which to copy characters
+ * @n: the count of characters to replicate
  *
- * This function scans a string for a specific character and returns a pointer
- * to the first occurrence of this character in the string.
- */
-char *_strchr(char *s, char c)
-{
-	do {
-		if (*s == c)
-			return (s);
-	} while (*s++);
-
-	return (NULL);
-}
-
-/**
- * string_concatenate - merges a certain amount of characters from one string to another
- * @dest: the string to be appended to
- * @src: the string to append from
- * @n: the maximum number of characters to append
- *
- * Appends up to n characters from the source to the destination string. 
- * If the source is shorter than n, the remaining space in the destination will be null-padded.
- */
-char *_strncat(char *dest, char *src, int n)
-{
-	int i, j;
-	char *result = dest;
-
-	i = 0;
-	j = 0;
-	while (dest[i])
-		i++;
-	while (src[j] && j < n)
-	{
-		dest[i++] = src[j++];
-	}
-	if (j < n)
-		dest[i] = '\0';
-
-	return (result);
-}
-
-/**
- * string_copy_n - duplicates a specified number of characters from a string
- * @dest: the buffer to copy to
- * @src: the source string to copy from
- * @n: the number of characters to copy
- *
- * Copies up to n characters from one string to another. If the source string is shorter
- * than n, the remainder of the destination string is filled with null bytes.
+ * This function will copy 'n' characters from 'src' to 'dest'. If 'src' has fewer than 'n'
+ * characters, the remainder of 'dest' will be padded with null bytes. The function returns
+ * a pointer to the destination string.
  */
 char *_strncpy(char *dest, char *src, int n)
 {
-	int i, j;
-	char *result = dest;
-
-	i = 0;
-	while (src[i] && i < n - 1)
+	int index = 0;
+	while (src[index] && index < n - 1)
 	{
-		dest[i] = src[i];
-		i++;
+		dest[index] = src[index];
+		index++;
 	}
-	for (j = i; j < n; j++)
-		dest[j] = '\0';
+	for (int padding = index; padding < n; padding++)
+		dest[padding] = '\0';
 
-	return (result);
+	return dest;
+}
+
+/**
+ * append_limited_chars - appends characters from one string to another up to a limit
+ * @dest: the string to be appended to
+ * @src: the string to append from
+ * @n: the maximum number of characters to transfer
+ *
+ * Concatenates up to 'n' characters from 'src' onto the end of 'dest'. If 'src' is shorter
+ * than 'n', the concatenation stops at the null-terminator. The destination string is always
+ * null-terminated. Returns the concatenated string.
+ */
+char *_strncat(char *dest, char *src, int n)
+{
+	int dest_len = 0, src_index = 0;
+	while (dest[dest_len])
+		dest_len++;
+	while (src[src_index] && src_index < n)
+		dest[dest_len++] = src[src_index++];
+	if (src_index < n)
+		dest[dest_len] = '\0';
+
+	return dest;
+}
+
+/**
+ * find_char - locates the first instance of a character in a string
+ * @s: the string within which to search for the character
+ * @c: the target character to find
+ *
+ * Searches through a string to find the first appearance of a specified character, 'c'.
+ * If the character is found, a pointer to its location in the string is returned. If the character
+ * is not found, the function returns NULL.
+ */
+char *_strchr(char *s, char c)
+{
+	while (*s)
+	{
+		if (*s == c)
+			return s;
+		s++;
+	}
+
+	return NULL; // Return NULL if the character is not found.
 }
