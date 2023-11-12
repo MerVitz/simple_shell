@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * execute_command - initiates a subprocess to execute a command
+ * fork_cmd - initiates a subprocess to execute a command
  * @info: holds all the shell state and command information
  *
  * This function creates a new process where the command provided in
@@ -41,7 +41,7 @@ void fork_cmd(info_t *info)
 }
 
 /**
- * search_for_cmd - searches for a command in the system's PATH
+ * find_cmd - searches for a command in the system's PATH
  * @info: contains all the shell state and command information
  *
  * If a command is found in the PATH, it is executed by forking a subprocess.
