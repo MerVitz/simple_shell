@@ -79,7 +79,7 @@ void establish_info(info_t *info, char **av)
  * Return: This function is typically called at the start of a 
  * new command loop.
  */
-void clear_info(info_t *info)
+void reset_info(info_t *info)
 {
 	info->arg = NULL;
 	info->argv = NULL;
