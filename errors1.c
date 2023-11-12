@@ -121,7 +121,7 @@ void print_error(info_t *info, char *error_msg)
 }
 
 /**
- * error_toi - converts an error string to an integer
+ * erroratoi - converts an error string to an integer
  * @s: the error string to convert
  *
  * Analyzes an error string to extract the numeric value it represents.
