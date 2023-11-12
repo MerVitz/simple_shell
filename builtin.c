@@ -4,13 +4,14 @@
  * help_command - provides help information for built-in commands
  * @info: shell state, including arguments provided to the 'help' command
  *
- * Displays a message indicating that the help functionality is not yet implemented.
- * It serves as a placeholder for when the help descriptions are added.
+ * Displays a message indicating that the help functionality is
+ * not yet implemented.
+ * Return: serves as a placeholder for when the help descriptions are added.
  */
-int _myhelp(info_t *info)
+int help_command(info_t *info)
 {
 	_puts("Help functionality is underway. Please check back later.\n");
-	if (0) // Temporary workaround for unused variable warning.
+	if (0)
 		_puts(*info->argv);
 	return (0);
 }
@@ -21,9 +22,10 @@ int _myhelp(info_t *info)
  *
  * Attempts to change the current directory based on the arguments provided.
  * If no argument is given, it tries to go to the home directory.
- * It can handle relative paths, absolute paths, and '-' for previous directory.
+ * Return: can handle relative paths, absolute paths, 
+ * and '-' for previous directory.
  */
-int _mycd(info_t *info)
+int change_directory(info_t *info)
 {
 	char *current_dir, *target_dir, buffer[1024];
 	int change_dir_result;
@@ -34,7 +36,7 @@ int _mycd(info_t *info)
 
 	target_dir = info->argv[1] ? info->argv[1] : _getenv(info, "HOME=");
 	if (!target_dir)
-		change_dir_result = chdir(current_dir); // Fallback to current directory if HOME is not set.
+		change_dir_result = chdir(current_dir); 
 	else if (_strcmp(info->argv[1], "-") == 0)
 	{
 		target_dir = _getenv(info, "OLDPWD=");
@@ -64,16 +66,17 @@ int _mycd(info_t *info)
  *
  * Processes the 'exit' command, extracting an optional exit status.
  * If no status is provided, exits with the current status of the shell.
- * If an invalid status is provided, prints an error and returns.
+ * Return: If an invalid status is provided, 
+ : prints an error and returns.
  */
-int _myexit(info_t *info)
+int exit_shell(info_t *info)
 {
 	int status_code;
 
-	if (info->argv[1]) // Check for an argument to the exit command.
+	if (info->argv[1])
 	{
 		status_code = _erratoi(info->argv[1]);
-		if (status_code == -1) // Validate the provided argument.
+		if (status_code == -1)
 		{
 			info->status = 2;
 			print_error(info, "Illegal number: ");
@@ -82,8 +85,8 @@ int _myexit(info_t *info)
 			return (1);
 		}
 		info->err_num = status_code;
-		return (-2); // Signal to exit the shell.
+		return (-2);
 	}
 	info->err_num = -1;
-	return (-2); // Signal to exit the shell with the last command's status.
+	return (-2);
 }
