@@ -15,7 +15,7 @@ void sigintHandler(__attribute__((unused))int sig_num)
 }
 
 /**
- * read_from_source - reads input from a file descriptor into a buffer
+ * read_buf - reads input from a file descriptor into a buffer
  * @info: parameter struct containing the file descriptor
  * @buf: buffer to read into
  * @i: current position in buffer
