@@ -1,12 +1,14 @@
 #include "shell.h"
 
 /**
- * divide_string - breaks up a string into an array of words based on a single character delimiter
+ * divide_string - breaks up a string into an array of words
+ * based on a single character delimiter
  * @str: the string to be tokenized
  * @d: the delimiter character used to tokenize the string
- * Return: a dynamically allocated array of tokenized strings, or NULL if memory allocation fails
+ * Return: a dynamically allocated array of tokenized strings, 
+ * or NULL if memory allocation fails
  */
-char **strtow2(char *str, char d)
+char **divide_string(char *str, char d)
 {
 	int i, j, k, m, numwords = 0;
 	char **s;
@@ -54,7 +56,7 @@ char **strtow2(char *str, char d)
  * This function analyzes a string and separates it into an array of words, ignoring
  * consecutive delimiters and only considering non-delimiter sequences as words.
  */
-char **strtow(char *str, char *d)
+char **segment_string(char *str, char *d)
 {
 	int i, j, k, m, numwords = 0;
 	char **s;
