@@ -5,10 +5,12 @@
  * @old: pointer to the string to be replaced
  * @new: string to replace with
  *
- * This function replaces the contents of the pointer to the old string with a new string
- * and deallocates the memory for the old string. It returns 1 to indicate the operation was successful.
+ * This function replaces the contents of the pointer 
+ * to the old string with a new string
+ * and deallocates the memory for the old string. 
+ * Return: 1 to indicate the operation was successful.
  */
-int replace_string(char **old, char *new)
+int swap_string(char **old, char *new)
 {
 	free(*old);
 	*old = new;
@@ -19,10 +21,12 @@ int replace_string(char **old, char *new)
  * insert_variables - substitutes variables within the command arguments
  * @info: context containing shell information, including variables
  *
- * Scans through the argument list, replacing any recognized variables with their values.
- * Unrecognized variables are replaced with an empty string. It always returns 0.
+ * Scans through the argument list, replacing any recognized 
+ * variables with their values.
+ * Unrecognized variables are replaced with an empty string. 
+ * Return: 0.
  */
-int replace_vars(info_t *info)
+int insert_variables(info_t *info)
 {
 	int i = 0;
 	list_t *node;
@@ -60,16 +64,18 @@ int replace_vars(info_t *info)
  * swap_aliases - seeks and replaces aliases in the tokenized command
  * @info: context containing shell information, including aliases
  *
- * Iterates over the aliases list and replaces any matching first argument of the command
- * with its corresponding alias value. Returns 1 if an alias was replaced, 0 otherwise.
+ * Iterates over the aliases list and replaces any matching first 
+ * argument of the command
+ * with its corresponding alias value. 
+ * Return: 1 if an alias was replaced, 0 otherwise.
  */
-int replace_alias(info_t *info)
+int swap_aliases(info_t *info)
 {
 	int i;
 	list_t *node;
 	char *p;
 
-	for (i = 0; i < 10; i++) // Iterate up to 10 times to resolve nested aliases
+	for (i = 0; i < 10; i++)
 	{
 		node = node_starts_with(info->alias, info->argv[0], '=');
 		if (!node)
@@ -94,10 +100,11 @@ int replace_alias(info_t *info)
  * @i: index in the buffer to check from
  * @len: total length of the buffer
  *
- * This function determines whether to break out of a command chain based on the result of the last command.
- * It modifies the buffer to terminate the chain if necessary.
+ * This function determines whether to break out of a command chain 
+ * based on the result of the last command.
+ * Return: It modifies the buffer to terminate the chain if necessary.
  */
-void check_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
+void verify_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
 {
 	size_t j = *p;
 
@@ -120,10 +127,11 @@ void check_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
  * @buf: command buffer to be parsed
  * @p: pointer to current position in the buffer
  *
- * Checks for the presence of a chain delimiter in the command buffer and updates the parsing state accordingly.
- * It returns 1 if a delimiter is found, otherwise 0.
+ * Checks for the presence of a chain delimiter in the command 
+ * buffer and updates the parsing state accordingly.
+ * Return: 1 if a delimiter is found, otherwise 0.
  */
-int is_chain(info_t *info, char *buf, size_t *p)
+int detect_chain(info_t *info, char *buf, size_t *p)
 {
 	size_t j = *p;
 
