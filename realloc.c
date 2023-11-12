@@ -7,7 +7,7 @@
  * @n: the number of bytes to set in the memory block
  * Return: pointer to the beginning of the memory block
  */
-char *_memset(char *s, char b, unsigned int n)
+char *fill_memory(char *s, char b, unsigned int n)
 {
 	unsigned int i;
 
@@ -21,9 +21,9 @@ char *_memset(char *s, char b, unsigned int n)
  * @pp: array of string pointers to be deallocated
  * 
  * This function iterates through an array of strings, freeing each one,
- * then finally frees the array itself.
+ * Return: frees the array itself.
  */
-void ffree(char **pp)
+void array_free(char **pp)
 {
 	char **a = pp;
 
@@ -43,7 +43,7 @@ void ffree(char **pp)
  * Return: a pointer to the newly allocated memory, which is suitably 
  * aligned for any kind of variable and may be different from ptr.
  */
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
+void *resize_memory(void *ptr, unsigned int old_size, unsigned int new_size)
 {
 	char *p;
 
