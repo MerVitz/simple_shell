@@ -8,18 +8,18 @@
  * Buffers the character and writes it to the specified file descriptor. The buffer is flushed when full or when commanded.
  * Returns 1 on success, or -1 if an error occurs and sets errno.
  */
-int _putfd(char c, int fd)
+int write_to_file_descriptor(char c, int fd)
 {
 	static int i = 0;
 	static char buf[WRITE_BUF_SIZE];
 
 	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
 	{
-		write(fd, buf, i); // Flush the buffer to the file descriptor.
-		i = 0; // Reset the buffer index.
+		write(fd, buf, i);
+		i = 0;
 	}
 	if (c != BUF_FLUSH)
-		buf[i++] = c; // Store the character in the buffer.
+		buf[i++] = c;
 	return (1);
 }
 
@@ -28,18 +28,19 @@ int _putfd(char c, int fd)
  * @str: the string to print
  * @fd: the file descriptor to write to
  *
- * This function sends each character of a string to the _putfd function to write to the specified file descriptor.
+ * This function sends each character of a string to the 
+ * print_string_to_fd function to write to the specified file descriptor.
  * Returns the total number of characters written.
  */
-int _putsfd(char *str, int fd)
+int print_string_to_fd(char *str, int fd)
 {
 	int count = 0;
 
 	while (str && *str)
 	{
-		count += _putfd(*str++, fd); // Write each character to the file descriptor.
+		count += print_string_to_fd(*str++, fd); 
 	}
-	return (count); // Return the number of characters written.
+	return (count);
 }
 
 /**
@@ -56,11 +57,11 @@ int _eputchar(char c)
 
 	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
 	{
-		write(2, buf, i); // Flush the buffer to stderr.
-		i = 0; // Reset the buffer index.
+		write(2, buf, i);
+		i = 0; 
 	}
 	if (c != BUF_FLUSH)
-		buf[i++] = c; // Store the character in the buffer.
+		buf[i++] = c;
 	return (1);
 }
 
@@ -70,10 +71,10 @@ int _eputchar(char c)
  *
  * Iterates through the error message string, passing each character to the _eputchar function to write to stderr.
  */
-void _eputs(char *str)
+void print_error_string(char *str)
 {
 	while (str && *str)
 	{
-		_eputchar(*str++); // Write each character to stderr.
+		_eputchar(*str++);
 	}
 }
