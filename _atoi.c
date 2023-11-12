@@ -1,11 +1,12 @@
 #include "shell.h"
 
 /**
- * convert_string_to_int - converts string to integer, ignoring non-numeric leading characters
+ * _atoi - converts string to integer, ignoring non-numeric leading characters
  * @s: the string that represents an integer
  *
  * Parses the string to extract an integer value. Handles negative numbers by detecting a '-' sign.
  * The conversion continues until a non-digit character is encountered if an initial digit has been identified.
+ * Return: Zero if no number are in the string otherwise, converted number
  */
 int _atoi(char *s)
 {
@@ -31,10 +32,10 @@ int _atoi(char *s)
 }
 
 /**
- * check_if_alpha - determines if a character is an alphabetic letter
+ * _isalpha - determines if a character is an alphabetic letter
  * @c: the character to be checked
  *
- * Returns 1 if the character is a letter, 0 otherwise.
+ * Return: 1 if the character is a letter, 0 otherwise.
  */
 int _isalpha(int c)
 {
@@ -45,11 +46,11 @@ int _isalpha(int c)
 }
 
 /**
- * verify_delimiter - checks if a character is among a set of delimiters
+ * is_delim - checks if a character is among a set of delimiters
  * @c: the character to check
  * @delim: the delimiter string
  *
- * Returns 1 if the character is a delimiter, 0 otherwise.
+ * Return: 1 if the character is a delimiter, 0 otherwise.
  */
 int is_delim(char c, char *delim)
 {
@@ -64,7 +65,7 @@ int is_delim(char c, char *delim)
  * @info: shell state information
  *
  * Determines if the shell is interacting with a user or running from a script by checking the file descriptor.
- * Returns 1 for interactive mode, 0 for non-interactive.
+ * Return: 1 for interactive mode, 0 for non-interactive.
  */
 int interactive(info_t *info)
 {
