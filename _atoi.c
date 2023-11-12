@@ -4,8 +4,10 @@
  * _atoi - converts string to integer, ignoring non-numeric leading characters
  * @s: the string that represents an integer
  *
- * Parses the string to extract an integer value. Handles negative numbers by detecting a '-' sign.
- * The conversion continues until a non-digit character is encountered if an initial digit has been identified.
+ * Parses the string to extract an integer value.
+ * Handles negative numbers by detecting a '-' sign.
+ * The conversion continues until a non-digit character is encountered if 
+ * an initial digit has been identified.
  * Return: Zero if no number are in the string otherwise, converted number
  */
 int _atoi(char *s)
