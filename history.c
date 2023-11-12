@@ -1,10 +1,12 @@
 #include "shell.h"
 
 /**
- * update_history_numbers - recalculates the index numbers of each history entry
+ * update_history_numbers - recalculates the index 
+ * numbers of each history entry
  * @info: structure containing shell state, including history list
  *
- * Iterates over the history list, assigning a new sequence number to each entry
+ * Iterates over the history list, assigning a 
+ * new sequence number to each entry
  * based on its position. 
  * Return:  the total count of history entries.
  */
@@ -38,7 +40,7 @@ int populate_history(info_t *info, char *buf, int linecount)
 
 	if (node)
 	{
-		while (node->next)  // Traverse to the end of the list
+		while (node->next)
 			node = node->next;
 		add_node_end(&node, buf, linecount);
 	}
@@ -133,9 +135,11 @@ int save_history(info_t *info)
 
 /**
  * locate_history_file - finds or creates the file used to store command history
- * @info: pointer to the shell state structure containing environment variables
+ * @info: pointer to the shell state structure
+ * containing environment variables
  *
- * Checks the HOME environment variable to determine the directory for the history file,
+ * Checks the HOME environment variable to determine the
+ * directory for the history file,
  * then constructs the full path to the history file. 
  * Return: the path as a string.
  */
