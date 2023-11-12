@@ -7,7 +7,7 @@
  *
  * Return: 1 if the path is an executable, 0 if not
  */
-int is_cmd(info_t *info, char *path)
+int check_for_command(info_t *info, char *path)
 {
 	struct stat st;
 
@@ -30,7 +30,7 @@ int is_cmd(info_t *info, char *path)
  *
  * Return: pointer to the newly created string segment
  */
-char *dup_chars(char *pathstr, int start, int stop)
+char *copy_characters(char *pathstr, int start, int stop)
 {
 	static char buf[1024];
 	int i = 0, k = 0;
@@ -50,7 +50,7 @@ char *dup_chars(char *pathstr, int start, int stop)
  *
  * Return: the full path to the command if it exists, or NULL if not found
  */
-char *find_path(info_t *info, char *pathstr, char *cmd)
+char *seek_cmd_path(info_t *info, char *pathstr, char *cmd)
 {
 	int i = 0, curr_pos = 0;
 	char *path;
