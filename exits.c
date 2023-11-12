@@ -1,12 +1,14 @@
 #include "shell.h"
 
 /**
- * copy_partial_string - replicates a subset of a source string to a destination
+ * copy_partial_string - replicates a subset of a source 
+ * string to a destination
  * @dest: the target buffer for copying
  * @src: the original string from which to copy characters
  * @n: the count of characters to replicate
  *
- * This function will copy 'n' characters from 'src' to 'dest'. If 'src' has fewer than 'n'
+ * This function will copy 'n' characters from 'src' to 'dest'.
+ * If 'src' has fewer than 'n'
  * characters, the remainder of 'dest' will be padded with null bytes. 
  * Return: a pointer to the destination string.
  */
