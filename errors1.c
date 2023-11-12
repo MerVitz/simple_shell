@@ -26,9 +26,8 @@ void remove_comments(char *buf)
  * @flags: flags to determine the conversion process, like sign
  * handling and letter case
  *
- * This function acts as a custom itoa, converting a given number to its string
- * equivalent in the specified base, with optional sign 
- * and letter case formatting.
+ * Return: a given number to its string equivalent in the specified base,
+ * with optional sign and letter case formatting.
  */
 char *convert_number(long int num, int base, int flags)
 {
@@ -65,7 +64,7 @@ char *convert_number(long int num, int base, int flags)
  * @fd: the file descriptor to print to
  *
  * Outputs an integer as a sequence of characters to the given file descriptor.
- * Handles negative numbers and prints the corresponding '-' sign.
+ * Return: Handles negative numbers and prints the corresponding '-' sign.
  */
 int print_d(int input, int fd)
 {
@@ -126,7 +125,7 @@ void print_error(info_t *info, char *error_msg)
  * @s: the error string to convert
  *
  * Analyzes an error string to extract the numeric value it represents.
- * Returns the integer value of the string or -1 if conversion isn't possible.
+ * Return: the integer value of the string or -1 if conversion isn't possible.
  */
 int _erratoi(char *s)
 {
