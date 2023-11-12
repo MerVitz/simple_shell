@@ -6,7 +6,7 @@
  * @fd: the file descriptor to which the character will be written
  *
  * Buffers the character and writes it to the specified file descriptor. The buffer is flushed when full or when commanded.
- * Returns 1 on success, or -1 if an error occurs and sets errno.
+ * Return: 1 on success, or -1 if an error occurs and sets errno.
  */
 int write_to_file_descriptor(char c, int fd)
 {
@@ -30,7 +30,7 @@ int write_to_file_descriptor(char c, int fd)
  *
  * This function sends each character of a string to the 
  * print_string_to_fd function to write to the specified file descriptor.
- * Returns the total number of characters written.
+ * Return: the total number of characters written.
  */
 int print_string_to_fd(char *str, int fd)
 {
@@ -48,7 +48,7 @@ int print_string_to_fd(char *str, int fd)
  * @c: the character to output
  *
  * Buffers the character and writes it to standard error. The buffer is flushed when full or when commanded.
- * Returns 1 on success, or -1 on error with errno set appropriately.
+ * Return: 1 on success, or -1 on error with errno set appropriately.
  */
 int _eputchar(char c)
 {
