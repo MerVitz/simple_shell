@@ -6,11 +6,13 @@
  * @var: The environment variable to set or modify
  * @value: The value to assign to the environment variable
  *
- * Allocates a new buffer and constructs the environment string as 'VAR=VALUE'.
- * If the variable already exists, it updates the value; otherwise, it adds a new variable.
- * Returns 0 on success, 1 on memory allocation failure.
+ * Allocates a new buffer and constructs the environment
+ * string as 'VAR=VALUE'.
+ * If the variable already exists, it updates the value;
+ * otherwise, it adds a new variable.
+ * Return: 0 on success, 1 on memory allocation failure.
  */
-int _setenv(info_t *info, char *var, char *value)
+int modify_environment(info_t *info, char *var, char *value)
 {
 	char *buffer;
 	list_t *current_node;
@@ -52,10 +54,11 @@ int _setenv(info_t *info, char *var, char *value)
  * @info: Structure with shell information and the environment list
  * @var: Variable name to search for and delete
  *
- * Iterates over the environment list to find and remove the variable 'var'.
- * Returns 1 if the variable was deleted, 0 otherwise.
+ * Iterates over the environment list to find and remove
+ * the variable 'var'.
+ * Return: 1 if the variable was deleted, 0 otherwise.
  */
-int _unsetenv(info_t *info, char *var)
+int discard_environment_variable(info_t *info, char *var)
 {
 	list_t *current_node = info->env;
 	size_t index = 0;
@@ -81,19 +84,22 @@ int _unsetenv(info_t *info, char *var)
 }
 
 /**
- * fetch_environment_snapshot - Retrieves the current environment variable array
+ * fetch_environment_snapshot - Retrieves the current environment
+ * variable array
  * @info: Structure containing shell state, including environment variables
  *
- * Returns the current environment as a string array. If the environment has changed,
- * the array is updated before being returned. Always returns 0.
+ * Returns the current environment as a string array. If the
+ * environment has changed,
+ * the array is updated before being returned. Always 
+ * Return: 0.
  */
-char **get_environ(info_t *info)
+char **fetch_environment_snapshot(info_t *info)
 {
 	if (!info->environ || info->env_changed)
 	{
-		ffree(info->environ); // Frees the previous environment strings array if it exists.
-		info->environ = list_to_strings(info->env); // Converts the linked list to a string array.
-		info->env_changed = 0; // Resets the changed flag after the update.
+		ffree(info->environ);
+		info->environ = list_to_strings(info->env);
+		info->env_changed = 0;
 	}
 
 	return (info->environ);
