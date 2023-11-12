@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * capture_signal - intercepts the SIGINT signal to prevent shell exit
+ * sigintHandler - intercepts the SIGINT signal to prevent shell exit
  * @sig_num: the signal number received, expected to be SIGINT
  *
  * Instead of terminating the shell, it flushes the output buffer and
@@ -22,7 +22,7 @@ void sigintHandler(__attribute__((unused))int sig_num)
  *
  * This function reads input into a buffer from a file descriptor
  * specified in info.
- * It returns the number of bytes read or -1 on error.
+ * Return: the number of bytes read or -1 on error.
  */
 ssize_t read_buf(info_t *info, char *buf, size_t *i)
 {
@@ -37,7 +37,7 @@ ssize_t read_buf(info_t *info, char *buf, size_t *i)
 }
 
 /**
- * acquire_line - retrieves a line of input from a file descriptor
+ * _getline - retrieves a line of input from a file descriptor
  * @info: pointer to the shell info structure containing file 
  * descriptor for input
  * @ptr: address of pointer to buffer, to store the input line
@@ -88,7 +88,7 @@ int _getline(info_t *info, char **ptr, size_t *length)
 }
 
 /**
- * process_input_chain - processes chained commands from input buffer
+ * input_buf - processes chained commands from input buffer
  * @info: pointer to the shell info structure
  * @buf: address of input buffer containing command chain
  * @len: address of length variable tracking the buffer size
@@ -96,7 +96,7 @@ int _getline(info_t *info, char **ptr, size_t *length)
  * Manages the parsing and execution of chained commands read
  * into the input buffer.
  * Handles input retrieval, command separation, and history logging.
- * Returns the number of bytes processed.
+ * Return: the number of bytes processed.
  */
 ssize_t input_buf(info_t *info, char **buf, size_t *len)
 {
@@ -132,13 +132,13 @@ ssize_t input_buf(info_t *info, char **buf, size_t *len)
 }
 
 /**
- * fetch_input - retrieves and processes a single command or a chain of commands
+ * get_input - retrieves and processes a single command or a chain of commands
  * @info: pointer to the shell info structure
  *
  * Coordinates the retrieval of input lines and manages command
  * chaining by checking for semicolons.
  * Handles command history and buffer management.
- * Returns the length of the command to be executed.
+ * Return: the length of the command to be executed.
  */
 ssize_t get_input(info_t *info)
 {
