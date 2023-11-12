@@ -134,7 +134,8 @@ int save_history(info_t *info)
 }
 
 /**
- * locate_history_file - finds or creates the file used to store command history
+ * locate_history_file - finds or creates the file used 
+ * to store command history
  * @info: pointer to the shell state structure
  * containing environment variables
  *
