@@ -1,11 +1,13 @@
 #include "shell.h"
 
 /**
- * write_to_file_descriptor - writes a single character to a specified file descriptor
+ * write_to_file_descriptor - writes a single character to a specified file
+ * descriptor
  * @c: the character to output
  * @fd: the file descriptor to which the character will be written
  *
- * Buffers the character and writes it to the specified file descriptor. The buffer is flushed when full or when commanded.
+ * Buffers the character and writes it to the specified file descriptor. 
+ * The buffer is flushed when full or when commanded.
  * Return: 1 on success, or -1 if an error occurs and sets errno.
  */
 int write_to_file_descriptor(char c, int fd)
@@ -47,10 +49,11 @@ int print_string_to_fd(char *str, int fd)
  * print_error_character - writes a single character to stderr
  * @c: the character to output
  *
- * Buffers the character and writes it to standard error. The buffer is flushed when full or when commanded.
+ * Buffers the character and writes it to standard error. 
+ * The buffer is flushed when full or when commanded.
  * Return: 1 on success, or -1 on error with errno set appropriately.
  */
-int _eputchar(char c)
+int print_error_character(char c)
 {
 	static int i = 0;
 	static char buf[WRITE_BUF_SIZE];
@@ -69,7 +72,8 @@ int _eputchar(char c)
  * print_error_string - outputs an error message to stderr
  * @str: the error message to print
  *
- * Iterates through the error message string, passing each character to the _eputchar function to write to stderr.
+ * Iterates through the error message string, passing each 
+ * character to the _eputchar function to write to stderr.
  */
 void print_error_string(char *str)
 {
