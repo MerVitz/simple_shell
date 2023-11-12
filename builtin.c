@@ -67,7 +67,7 @@ int change_directory(info_t *info)
  * Processes the 'exit' command, extracting an optional exit status.
  * If no status is provided, exits with the current status of the shell.
  * Return: If an invalid status is provided, 
- : prints an error and returns.
+ * prints an error and returns.
  */
 int exit_shell(info_t *info)
 {
