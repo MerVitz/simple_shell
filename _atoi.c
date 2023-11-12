@@ -15,18 +15,18 @@ int _atoi(char *s)
 	for (i = 0; s[i] != '\0' && flag != 2; i++)
 	{
 		if (s[i] == '-')
-			sign *= -1; // Toggle the sign with each '-' found.
+			sign *= -1;
 
 		if (s[i] >= '0' && s[i] <= '9')
 		{
-			flag = 1; // Mark that we've started parsing a number.
-			result = result * 10 + (s[i] - '0'); // Build the integer result.
+			flag = 1; 
+			result = result * 10 + (s[i] - '0');
 		}
-		else if (flag == 1) // If we've already started a number, stop converting on non-digit.
+		else if (flag == 1) 
 			flag = 2;
 	}
 
-	output = sign == -1 ? -result : result; // Apply the sign to the result.
+	output = sign == -1 ? -result : result; 
 	return (output);
 }
 
@@ -39,7 +39,7 @@ int _atoi(char *s)
 int _isalpha(int c)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1); // Check for both lowercase and uppercase alphabetic characters.
+		return (1);
 	else
 		return (0);
 }
@@ -55,7 +55,7 @@ int is_delim(char c, char *delim)
 {
 	while (*delim)
 		if (*delim++ == c)
-			return (1); // Check against each character in the delimiter string.
+			return (1);
 	return (0);
 }
 
@@ -68,5 +68,5 @@ int is_delim(char c, char *delim)
  */
 int interactive(info_t *info)
 {
-	return (isatty(STDIN_FILENO) && info->readfd <= 2); // Check if STDIN is connected to a terminal.
+	return (isatty(STDIN_FILENO) && info->readfd <= 2);
 }
