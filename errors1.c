@@ -1,30 +1,34 @@
 #include "shell.h"
 
 /**
- * eliminate_comments - nullifies comments within a command line
+ * remove_comments - nullifies comments within a command line
  * @buf: pointer to the command line string
  *
- * Scans the command line for a '#' character that signifies the start of a comment.
- * If found, the function replaces it with a null character to ignore the comment.
+ * Scans the command line for a '#' character that signifies the start of 
+ * a comment.
+ * If found, the function replaces it with a null 
+ * character to ignore the comment.
  */
 void remove_comments(char *buf)
 {
 	for (int i = 0; buf[i] != '\0'; i++)
 		if (buf[i] == '#' && (i == 0 || buf[i - 1] == ' '))
 		{
-			buf[i] = '\0'; // Truncate the string at the start of a comment.
+			buf[i] = '\0';
 			break;
 		}
 }
 
 /**
- * stringify_number - converts a long integer to a string representation
+ * convert_number - converts a long integer to a string representation
  * @num: the number to convert
  * @base: the numerical base for conversion
- * @flags: flags to determine the conversion process, like sign handling and letter case
+ * @flags: flags to determine the conversion process, like sign
+ * handling and letter case
  *
  * This function acts as a custom itoa, converting a given number to its string
- * equivalent in the specified base, with optional sign and letter case formatting.
+ * equivalent in the specified base, with optional sign 
+ * and letter case formatting.
  */
 char *convert_number(long int num, int base, int flags)
 {
@@ -36,27 +40,27 @@ char *convert_number(long int num, int base, int flags)
 
 	if (!(flags & CONVERT_UNSIGNED) && num < 0)
 	{
-		n = -num; // Convert to unsigned if the number is negative.
-		sign = '-'; // Prepare to add the negative sign.
+		n = -num; 
+		sign = '-'; 
 	}
 
 	digits = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
-	ptr = &buffer[49]; // Start at the end of the buffer.
+	ptr = &buffer[49];
 	*ptr = '\0';
 
 	do {
-		*--ptr = digits[n % base]; // Convert current digit and step back in the buffer.
-		n /= base; // Reduce the number.
+		*--ptr = digits[n % base];
+		n /= base;
 	} while (n != 0);
 
 	if (sign)
-		*--ptr = sign; // Place the sign if the number was negative.
+		*--ptr = sign;
 
-	return (ptr); // Return the pointer to the beginning of the number string.
+	return (ptr); 
 }
 
 /**
- * print_decimal - prints an integer to a specified file descriptor
+ * print_d - prints an integer to a specified file descriptor
  * @input: the integer to print
  * @fd: the file descriptor to print to
  *
@@ -65,59 +69,60 @@ char *convert_number(long int num, int base, int flags)
  */
 int print_d(int input, int fd)
 {
-	int (*printer)(char) = _putchar; // Function pointer for character output.
+	int (*printer)(char) = _putchar;
 	int i, count = 0;
 	unsigned int absolute, current;
 
 	if (fd == STDERR_FILENO)
-		printer = _eputchar; // Use the error output function for STDERR.
+		printer = _eputchar;
 
 	if (input < 0)
 	{
-		absolute = -input; // Get the absolute value if negative.
-		printer('-'); // Print the negative sign.
-		count++; // Increment the print count.
+		absolute = -input; 
+		printer('-'); 
+		count++; 
 	}
 	else
 		absolute = input;
 
 	current = absolute;
-	for (i = 1000000000; i > 1; i /= 10) // Loop through each decimal place.
+	for (i = 1000000000; i > 1; i /= 10) 
 	{
 		if (absolute / i)
 		{
-			printer('0' + current / i); // Print the digit.
-			count++; // Increment the print count.
+			printer('0' + current / i); 
+			count++; 
 		}
-		current %= i; // Reduce to the remainder.
+		current %= i; 
 	}
-	printer('0' + current); // Print the last digit.
-	count++; // Increment the print count.
+	printer('0' + current); 
+	count++; 
 
-	return (count); // Return the total number of characters printed.
+	return (count); 
 }
 
 /**
- * print_error_msg - outputs an error message with context information
+ * print_error - outputs an error message with context information
  * @info: the shell info structure containing program and argument details
  * @error_msg: the error message to print
  *
- * Constructs and prints a formatted error message to standard error, including the
+ * Constructs and prints a formatted error message to standard error
+ * , including the
  * shell program name, the line number, and the command that caused the error.
  */
 void print_error(info_t *info, char *error_msg)
 {
-	_eputs(info->fname); // Print the shell program name.
+	_eputs(info->fname); 
 	_eputs(": ");
-	print_d(info->line_count, STDERR_FILENO); // Print the line number.
+	print_d(info->line_count, STDERR_FILENO); 
 	_eputs(": ");
-	_eputs(info->argv[0]); // Print the command.
+	_eputs(info->argv[0]); 
 	_eputs(": ");
-	_eputs(error_msg); // Print the error message.
+	_eputs(error_msg); 
 }
 
 /**
- * parse_error_to_int - converts an error string to an integer
+ * error_toi - converts an error string to an integer
  * @s: the error string to convert
  *
  * Analyzes an error string to extract the numeric value it represents.
@@ -129,18 +134,18 @@ int _erratoi(char *s)
 	unsigned long int result = 0;
 
 	if (*s == '+')
-		s++; // Skip the plus sign; it's not needed for conversion.
+		s++; 
 
 	for (i = 0; s[i] != '\0'; i++)
 	{
-		if (s[i] >= '0' && s[i] <= '9') // Check if the character is a digit.
+		if (s[i] >= '0' && s[i] <= '9') 
 		{
-			result = result * 10 + (s[i] - '0'); // Convert to int and add to result.
+			result = result * 10 + (s[i] - '0'); 
 			if (result > INT_MAX)
-				return (-1); // Return error if result exceeds max int value.
+				return (-1); 
 		}
 		else
-			return (-1); // Return error if non-digit character is found.
+			return (-1); 
 	}
-	return (result); // Return the converted integer.
+	return (result);
 }
