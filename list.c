@@ -102,7 +102,7 @@ size_t display_list_strings(const list_t *h)
  * Constructs a new node and appends it to the end of the list,
  * updating the last node's next
  * reference. 
- * Returns the pointer to the new node, or NULL on failure.
+ * Return: the pointer to the new node, or NULL on failure.
  */
 list_t *append_node_to_end(list_t **head, const char *str, int num)
 {
