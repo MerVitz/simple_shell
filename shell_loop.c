@@ -87,8 +87,9 @@ void find_cmd(info_t *info)
  * seek_builtin - locates and executes built-in shell commands
  * @info: holds all the shell state and command information
  *
- * Searches for built-in commands like 'exit', 'env', etc., and executes
- * them if found. Otherwise, it delegates the command search to the PATH.
+ * Return: Searches for built-in commands like 'exit', 'env', etc.,
+ * and executes them if found. Otherwise, it delegates the command 
+ * search to the PATH.
  */
 int seek_builtin(info_t *info)
 {
@@ -120,8 +121,8 @@ int seek_builtin(info_t *info)
  * @info: holds all shell operational data
  * @av: argument vector passed from the main function
  *
- * Manages the input, processing, and execution of commands in a loop,
- * handling both interactive and non-interactive shell modes.
+ * Return: Manages the input, processing, and execution of commands 
+ * in a loop, * handling both interactive and non-interactive shell modes.
  */
 int shell_cycle(info_t *info, char **av)
 {
