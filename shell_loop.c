@@ -90,7 +90,7 @@ void find_cmd(info_t *info)
  * Searches for built-in commands like 'exit', 'env', etc., and executes
  * them if found. Otherwise, it delegates the command search to the PATH.
  */
-int find_builtin(info_t *info)
+int seek_builtin(info_t *info)
 {
 	int i, built_in_ret = -1;
 	builtin_table builtintbl[] = {
@@ -123,7 +123,7 @@ int find_builtin(info_t *info)
  * Manages the input, processing, and execution of commands in a loop,
  * handling both interactive and non-interactive shell modes.
  */
-int hsh(info_t *info, char **av)
+int shell_cycle(info_t *info, char **av)
 {
 	ssize_t r = 0;
 	int builtin_ret = 0;
