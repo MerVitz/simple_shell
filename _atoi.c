@@ -61,7 +61,7 @@ int is_delim(char c, char *delim)
 }
 
 /**
- * check_interactive_mode - assesses if the shell is running in interactive mode
+ * interactive - assesses if the shell is running in interactive mode
  * @info: shell state information
  *
  * Determines if the shell is interacting with a user or running from a script by checking the file descriptor.
