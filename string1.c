@@ -5,10 +5,12 @@
  * @dest: target location where the string will be copied
  * @src: source string to be copied
  *
- * This function replicates the content of the source string into the destination buffer,
- * ensuring the destination has a copy of the string. The function returns the destination pointer.
+ * This function replicates the content of the source string
+ * into the destination buffer,
+ * ensuring the destination has a copy of the string.
+ * Return: the destination pointer.
  */
-char *_strcpy(char *dest, char *src)
+char *replicate_string(char *dest, char *src)
 {
 	int i = 0;
 
@@ -24,13 +26,14 @@ char *_strcpy(char *dest, char *src)
 }
 
 /**
- * generate_duplicate - generates a new memory allocation containing the same string
+ * generate_duplicate - generates a new memory allocation 
+ * containing the same string
  * @str: the original string to duplicate
  *
  * This function allocates new memory and copies the input string into it,
- * returning a pointer to the newly allocated duplicate.
+ * Return: a pointer to the newly allocated duplicate.
  */
-char *_strdup(const char *str)
+char *generate_duplicate(const char *str)
 {
 	int length = 0;
 	char *ret;
@@ -50,9 +53,10 @@ char *_strdup(const char *str)
  * echo_string - prints a given string to standard output
  * @str: the string to be echoed
  *
- * By invoking the character-wise output function, this function writes an entire string to stdout.
+ * By invoking the character-wise output function, 
+ * Return: writes an entire string to stdout.
  */
-void _puts(char *str)
+void echo_string(char *str)
 {
 	int i = 0;
 
@@ -66,13 +70,16 @@ void _puts(char *str)
 }
 
 /**
- * buffered_char_output - writes characters to stdout with buffering capabilities
+ * buffered_char_output - writes characters to stdout with
+ * buffering capabilities
  * @c: character to be printed, or control character to manage the buffer
  *
- * This function manages a static buffer to collect characters and writes them to stdout
- * in a batch. It's designed to be efficient by reducing the number of write calls.
+ * This function manages a static buffer to collect characters 
+ * and writes them to stdout
+ * in a batch. It's designed to be efficient by reducing
+ * Return: number of write calls.
  */
-int _putchar(char c)
+int buffered_char_output(char c)
 {
 	static int i = 0;
 	static char buf[WRITE_BUF_SIZE];
