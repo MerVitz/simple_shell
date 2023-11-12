@@ -5,9 +5,10 @@
  * @info: structure containing shell state, including history list
  *
  * Iterates over the history list, assigning a new sequence number to each entry
- * based on its position. Returns the total count of history entries.
+ * based on its position. 
+ * Return:  the total count of history entries.
  */
-int renumber_history(info_t *info)
+int update_history_numbers(info_t *info)
 {
 	list_t *node = info->history;
 	int i = 0;
@@ -28,9 +29,10 @@ int renumber_history(info_t *info)
  * @linecount: the line number to assign to the history entry
  *
  * Adds a new entry to the end of the history list using the provided buffer.
- * The linecount is assigned as the entry's index number. Always returns 0.
+ * The linecount is assigned as the entry's index number. Always 
+ * Return:  0.
  */
-int build_history_list(info_t *info, char *buf, int linecount)
+int populate_history(info_t *info, char *buf, int linecount)
 {
 	list_t *node = info->history;
 
@@ -53,9 +55,10 @@ int build_history_list(info_t *info, char *buf, int linecount)
  * @info: pointer to the shell state structure containing the history list
  *
  * Opens the history file and reads its contents into the history list.
- * Each line is added as a separate entry. Returns the total number of history entries.
+ * Each line is added as a separate entry. 
+ * Return: the total number of history entries.
  */
-int read_history(info_t *info)
+int fetch_history(info_t *info)
 {
 	int i, last = 0, linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
@@ -102,9 +105,9 @@ int read_history(info_t *info)
  * @info: pointer to the shell state structure containing the history list
  *
  * Writes each history entry to a file, creating or truncating it as necessary.
- * Returns 1 on success, or -1 if the file could not be written.
+ * Return: 1 on success, or -1 if the file could not be written.
  */
-int write_history(info_t *info)
+int save_history(info_t *info)
 {
 	ssize_t fd;
 	char *filename = get_history_file(info);
@@ -133,9 +136,10 @@ int write_history(info_t *info)
  * @info: pointer to the shell state structure containing environment variables
  *
  * Checks the HOME environment variable to determine the directory for the history file,
- * then constructs the full path to the history file. Returns the path as a string.
+ * then constructs the full path to the history file. 
+ * Return: the path as a string.
  */
-char *get_history_file(info_t *info)
+char *locate_history_file(info_t *info)
 {
 	char *buf, *dir;
 
