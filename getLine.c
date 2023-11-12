@@ -20,7 +20,8 @@ void sigintHandler(__attribute__((unused))int sig_num)
  * @buf: buffer to read into
  * @i: current position in buffer
  *
- * This function reads input into a buffer from a file descriptor specified in info.
+ * This function reads input into a buffer from a file descriptor
+ * specified in info.
  * It returns the number of bytes read or -1 on error.
  */
 ssize_t read_buf(info_t *info, char *buf, size_t *i)
@@ -37,12 +38,15 @@ ssize_t read_buf(info_t *info, char *buf, size_t *i)
 
 /**
  * acquire_line - retrieves a line of input from a file descriptor
- * @info: pointer to the shell info structure containing file descriptor for input
+ * @info: pointer to the shell info structure containing file 
+ * descriptor for input
  * @ptr: address of pointer to buffer, to store the input line
  * @length: size of preallocated buffer if not NULL
  *
- * Reads input until a newline or EOF is encountered. It manages a static buffer to
- * keep track of the input state across multiple calls. Returns the length of the line read.
+ * Reads input until a newline or EOF is encountered. It manages 
+ * a static buffer to
+ * keep track of the input state across multiple calls. 
+ * Return: the length of the line read.
  */
 int _getline(info_t *info, char **ptr, size_t *length)
 {
@@ -89,8 +93,10 @@ int _getline(info_t *info, char **ptr, size_t *length)
  * @buf: address of input buffer containing command chain
  * @len: address of length variable tracking the buffer size
  *
- * Manages the parsing and execution of chained commands read into the input buffer.
- * Handles input retrieval, command separation, and history logging. Returns the number of bytes processed.
+ * Manages the parsing and execution of chained commands read
+ * into the input buffer.
+ * Handles input retrieval, command separation, and history logging.
+ * Returns the number of bytes processed.
  */
 ssize_t input_buf(info_t *info, char **buf, size_t *len)
 {
@@ -112,7 +118,7 @@ ssize_t input_buf(info_t *info, char **buf, size_t *len)
 		{
 			if ((*buf)[r - 1] == '\n')
 			{
-				(*buf)[r - 1] = '\0'; // Null-terminate before newline.
+				(*buf)[r - 1] = '\0';
 				r--;
 			}
 			info->linecount_flag = 1;
@@ -129,44 +135,46 @@ ssize_t input_buf(info_t *info, char **buf, size_t *len)
  * fetch_input - retrieves and processes a single command or a chain of commands
  * @info: pointer to the shell info structure
  *
- * Coordinates the retrieval of input lines and manages command chaining by checking for semicolons.
- * Handles command history and buffer management. Returns the length of the command to be executed.
+ * Coordinates the retrieval of input lines and manages command
+ * chaining by checking for semicolons.
+ * Handles command history and buffer management.
+ * Returns the length of the command to be executed.
  */
 ssize_t get_input(info_t *info)
 {
-	static char *buf; // Buffer for chained commands.
+	static char *buf;
 	static size_t i, j, len;
 	ssize_t r = 0;
 	char **buf_p = &(info->arg), *p;
 
 	_putchar(BUF_FLUSH);
 	r = input_buf(info, &buf, &len);
-	if (r == -1) // EOF received.
+	if (r == -1)
 		return (-1);
-	if (len) // Commands left in the chain buffer.
+	if (len)
 	{
-		j = i; // New iterator to current buffer position.
-		p = buf + i; // Pointer to return.
+		j = i;
+		p = buf + i;
 
 		check_chain(info, buf, &j, i, len);
-		while (j < len) // Iterate to semicolon or end.
+		while (j < len)
 		{
 			if (is_chain(info, buf, &j))
 				break;
 			j++;
 		}
 
-		i = j + 1; // Move past the nullified semicolon.
-		if (i >= len) // Reached the end of the buffer?
+		i = j + 1;
+		if (i >= len)
 		{
-			i = len = 0; // Reset buffer position and length.
+			i = len = 0;
 			info->cmd_buf_type = CMD_NORM;
 		}
 
-		*buf_p = p; // Pass back pointer to current command position.
-		return (_strlen(p)); // Return length of current command.
+		*buf_p = p;
+		return (_strlen(p));
 	}
 
-	*buf_p = buf; // Not a chain, pass back buffer from getline.
-	return (r); // Return buffer length from getline.
+	*buf_p = buf;
+	return (r);
 }
