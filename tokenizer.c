@@ -51,9 +51,11 @@ char **divide_string(char *str, char d)
  * segment_string - dissects a string into words based on a set of delimiters
  * @str: the string to be divided
  * @d: the string containing delimiter characters
- * Return: an array of words derived from the string, or NULL if the operation fails
+ * Return: an array of words derived from the string, or
+ * NULL if the operation fails
  *
- * This function analyzes a string and separates it into an array of words, ignoring
+ * This function analyzes a string and separates it into an array
+ * of words, ignoring
  * consecutive delimiters and only considering non-delimiter sequences as words.
  */
 char **segment_string(char *str, char *d)
