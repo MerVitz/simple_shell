@@ -1,67 +1,65 @@
 #include "shell.h"
 
 /**
- * update_history_numbers - recalculates the index
- * numbers of each history entry
- * @info: structure containing shell state, including history list
+ * get_history_file - gets the history file
+ * @info: parameter struct
  *
- * Iterates over the history list, assigning a
- * new sequence number to each entry
- * based on its position.
- * Return:  the total count of history entries.
+ * Return: allocated string containg history file
  */
-int update_history_numbers(info_t *info)
-{
-	list_t *node = info->history;
-	int i = 0;
 
-	while (node)
-	{
-		node->num = i++;
-		node = node->next;
-	}
-	info->histcount = i;
-	return (i);
+char *get_history_file(info_t *info)
+{
+	char *buf, *dir;
+
+	dir = _getenv(info, "HOME=");
+	if (!dir)
+		return (NULL);
+	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
+	if (!buf)
+		return (NULL);
+	buf[0] = 0;
+	_strcpy(buf, dir);
+	_strcat(buf, "/");
+	_strcat(buf, HIST_FILE);
+	return (buf);
 }
 
 /**
- * populate_history - constructs the history list from a buffer
- * @info: pointer to the shell state structure containing the history list
- * @buf: string buffer representing one history entry
- * @linecount: the line number to assign to the history entry
+ * write_history - creates a file, or appends to an existing file
+ * @info: the parameter struct
  *
- * Adds a new entry to the end of the history list using the provided buffer.
- * The linecount is assigned as the entry's index number. Always
- * Return:  0.
+ * Return: 1 on success, else -1
  */
-int populate_history(info_t *info, char *buf, int linecount)
+int write_history(info_t *info)
 {
-	list_t *node = info->history;
+	ssize_t fd;
+	char *filename = get_history_file(info);
+	list_t *node = NULL;
 
-	if (node)
-	{
-		while (node->next)
-			node = node->next;
-		add_node_end(&node, buf, linecount);
-	}
-	else
-	{
-		info->history = add_node_end(&node, buf, linecount);
-	}
+	if (!filename)
+		return (-1);
 
-	return (0);
+	fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
+	free(filename);
+	if (fd == -1)
+		return (-1);
+	for (node = info->history; node; node = node->next)
+	{
+		_putsfd(node->str, fd);
+		_putfd('\n', fd);
+	}
+	_putfd(BUF_FLUSH, fd);
+	close(fd);
+	return (1);
 }
 
 /**
- * fetch_history - reads history entries from a file
- * @info: pointer to the shell state structure containing the history list
+ * read_history - reads history from file
+ * @info: the parameter struct
  *
- * Opens the history file and reads its contents into the history list.
- * Each line is added as a separate entry.
- * Return: the total number of history entries.
+ * Return: histcount on success, 0 otherwise
  */
-int fetch_history(info_t *info)
-{
+int read_history(info_t *info)
 {
 	int i, last = 0, linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
@@ -104,63 +102,42 @@ int fetch_history(info_t *info)
 	return (info->histcount);
 }
 
-
 /**
- * save_history - writes the history list to a file
- * @info: pointer to the shell state structure containing the history list
+ * build_history_list - adds entry to a history linked list
+ * @info: Structure containing potential arguments. Used to maintain
+ * @buf: buffer
+ * @linecount: the history linecount, histcount
  *
- * Writes each history entry to a file, creating or truncating it as necessary.
- * Return: 1 on success, or -1 if the file could not be written.
+ * Return: Always 0
  */
-int save_history(info_t *info)
+int build_history_list(info_t *info, char *buf, int linecount)
 {
-	ssize_t fd;
-	char *filename = get_history_file(info);
-	list_t *node = info->history;
+	list_t *node = NULL;
 
-	if (!filename)
-		return (-1);
+	if (info->history)
+		node = info->history;
+	add_node_end(&node, buf, linecount);
 
-	fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
-	free(filename);
-	if (fd == -1)
-		return (-1);
-
-	for (; node; node = node->next)
-	{
-		_putsfd(node->str, fd);
-		_putfd('\n', fd);
-	}
-	_putfd(BUF_FLUSH, fd);
-	close(fd);
-	return (1);
+	if (!info->history)
+		info->history = node;
+	return (0);
 }
 
 /**
- * locate_history_file - finds or creates the file used
- * to store command history
- * @info: pointer to the shell state structure
- * containing environment variables
+ * renumber_history - renumbers the history linked list after changes
+ * @info: Structure containing potential arguments. Used to maintain
  *
- * Checks the HOME environment variable to determine the
- * directory for the history file,
- * then constructs the full path to the history file.
- * Return: the path as a string.
+ * Return: the new histcount
  */
-char *locate_history_file(info_t *info)
+int renumber_history(info_t *info)
 {
-	char *buf, *dir;
+	list_t *node = info->history;
+	int i = 0;
 
-	dir = _getenv(info, "HOME=");
-	if (!dir)
-		return (NULL);
-
-	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
-	if (!buf)
-		return (NULL);
-
-	_strcpy(buf, dir);
-	_strcat(buf, "/");
-	_strcat(buf, HIST_FILE);
-	return (buf);
+	while (node)
+	{
+		node->num = i++;
+		node = node->next;
+	}
+	return (info->histcount = i);
 }
