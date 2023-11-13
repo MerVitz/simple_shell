@@ -1,18 +1,18 @@
 #include "shell.h"
 
 /**
- * release_info_resources - deallocates memory of 
+ * release_info_resources - deallocates memory of
  * info_t struct fields
  * @info: reference to the shell state structure
  * @all: flag to indicate if all or partial resources should be freed
  *
- * This function is responsible for freeing the memory allocated 
+ * This function is responsible for freeing the memory allocated
  * to fields within the info_t structure.
  * Return: all or part of the resources based on the 'all' flag.
  */
 void release_info_resources(info_t *info, int all)
 {
-	ffree(info->argv); // Frees array of strings.
+	ffree(info->argv);
 	info->argv = NULL;
 	info->path = NULL;
 	if (all)
@@ -35,7 +35,7 @@ void release_info_resources(info_t *info, int all)
 }
 
 /**
- * establish_info - sets up the info_t struct with 
+ * establish_info - sets up the info_t struct with
  * command line arguments
  * @info: pointer to the shell state structure
  * @av: argument vector from main
@@ -62,9 +62,9 @@ void establish_info(info_t *info, char **av)
 				info->argv[1] = NULL;
 			}
 		}
-		for (i = 0; info->argv && info->argv[i]; i++);
+		for (i = 0; info->argv && info->argv[i];
+				i++);
 		info->argc = i;
-		
 		replace_alias(info);
 		replace_vars(info);
 	}
@@ -74,9 +74,9 @@ void establish_info(info_t *info, char **av)
  * reset_info - resets the fields of info_t struct to default states
  * @info: reference to the shell state structure
  *
- * Resets the various fields within the info_t structure 
+ * Resets the various fields within the info_t structure
  * in preparation for processing a new command.
- * Return: This function is typically called at the start of a 
+ * Return: This function is typically called at the start of a
  * new command loop.
  */
 void reset_info(info_t *info)

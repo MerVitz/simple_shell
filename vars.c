@@ -4,10 +4,9 @@
  * swap_string - substitutes one string for another
  * @old: pointer to the string to be replaced
  * @new: string to replace with
- *
- * This function replaces the contents of the pointer 
+ * This function replaces the contents of the pointer
  * to the old string with a new string
- * and deallocates the memory for the old string. 
+ * and deallocates the memory for the old string.
  * Return: 1 to indicate the operation was successful.
  */
 int swap_string(char **old, char *new)
@@ -21,10 +20,10 @@ int swap_string(char **old, char *new)
  * insert_variables - substitutes variables within the command arguments
  * @info: context containing shell information, including variables
  *
- * Scans through the argument list, replacing any recognized 
+ * Scans through the argument list, replacing any recognized
  * variables with their values.
- * Unrecognized variables are replaced with an empty string. 
- * Return: 0.
+ * Unrecognized variables are replaced with an empty string.
+ * Return:0
  */
 int insert_variables(info_t *info)
 {
@@ -64,9 +63,9 @@ int insert_variables(info_t *info)
  * swap_aliases - seeks and replaces aliases in the tokenized command
  * @info: context containing shell information, including aliases
  *
- * Iterates over the aliases list and replaces any matching first 
+ * Iterates over the aliases list and replaces any matching first
  * argument of the command
- * with its corresponding alias value. 
+ * with its corresponding alias value.
  * Return: 1 if an alias was replaced, 0 otherwise.
  */
 int swap_aliases(info_t *info)
@@ -100,7 +99,7 @@ int swap_aliases(info_t *info)
  * @i: index in the buffer to check from
  * @len: total length of the buffer
  *
- * This function determines whether to break out of a command chain 
+ * This function determines whether to break out of a command chain
  * based on the result of the last command.
  * Return: It modifies the buffer to terminate the chain if necessary.
  */
@@ -127,7 +126,7 @@ void verify_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
  * @buf: command buffer to be parsed
  * @p: pointer to current position in the buffer
  *
- * Checks for the presence of a chain delimiter in the command 
+ * Checks for the presence of a chain delimiter in the command
  * buffer and updates the parsing state accordingly.
  * Return: 1 if a delimiter is found, otherwise 0.
  */
