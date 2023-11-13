@@ -66,7 +66,7 @@ void establish_info(info_t *info, char **av)
 		{
 		info->argc = i;
 		replace_alias(info);
-		replace_vars(info);	
+		replace_vars(info);
 		}
 	}
 }

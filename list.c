@@ -32,7 +32,7 @@ void clear_list(list_t **head_ptr)
  * @head: reference to the head node pointer
  * @index: the position of the node to remove
  *
- * Successively navigates to the node at the given index 
+ * Successively navigates to the node at the given index
  * and removes it from the list,
  * taking care to properly link the list's remaining nodes.
  * Return: 1 on success, 0 if it fails.
@@ -71,7 +71,7 @@ int remove_node_by_index(list_t **head, unsigned int index)
 }
 
 /**
- * display_list_strings - prints the string elements of a 
+ * display_list_strings - prints the string elements of a
  * list_t linked list
  * @h: pointer to the initial node
  *
@@ -101,7 +101,7 @@ size_t display_list_strings(const list_t *h)
  *
  * Constructs a new node and appends it to the end of the list,
  * updating the last node's next
- * reference. 
+ * reference.
  * Return: the pointer to the new node, or NULL on failure.
  */
 list_t *append_node_to_end(list_t **head, const char *str, int num)
@@ -143,7 +143,7 @@ list_t *append_node_to_end(list_t **head, const char *str, int num)
  *
  * Generates a new node and places it at the start of the list,
  * shifting the head of the list
- * to this newly created node. 
+ * to this newly created node.
  * Return: the new node or NULL if the allocation fails.
  */
 list_t *prepend_node(list_t **head, const char *str, int num)

@@ -5,7 +5,7 @@
  * @head: pointer to the start of the list
  * @node: the specific node to find the index for
  *
- * This function traverses the list from the beginning to 
+ * This function traverses the list from the beginning to
  * locate the node in question,
  * Return: the zero-based index of its position within the list.
  */
@@ -24,13 +24,13 @@ ssize_t retrieve_node_index(list_t *head, list_t *node)
 }
 
 /**
- * find_node_prefix - locates a node where the string 
+ * find_node_prefix - locates a node where the string
  * begins with a specified prefix
  * @node: starting node for the search
  * @prefix: leading characters to match in the node's string
  * @c: character that must follow the prefix for a successful match
  *
- * Searches through a linked list and 
+ * Searches through a linked list and
  * Return: the first node where the string matches the prefix
  * followed by the specified character, or NULL if no match is found.
  */
@@ -53,7 +53,7 @@ list_t *find_node_prefix(list_t *node, char *prefix, char c)
  * @h: pointer to the start of the list
  *
  * Iterates over a linked list and prints each element's
- : index and string to standard output.
+ * index and string to standard output.
  * Return: the number of elements printed.
  */
 size_t echo_list(const list_t *h)
@@ -78,7 +78,7 @@ size_t echo_list(const list_t *h)
  * @head: pointer to the start of the list
  *
  * Creates a new array of strings by duplicating the
- : strings stored in each element of the list.
+ * strings stored in each element of the list.
  * Return: a pointer to the array or NULL if the allocation fails.
  */
 char **list_to_array(list_t *head)
@@ -116,7 +116,7 @@ char **list_to_array(list_t *head)
  * @h: pointer to the first node of the list
  *
  * Tallies the number of nodes in a linked list from
- : the first node to the end.
+ * the first node to the end.
  * Return: the count as a size_t value.
  */
 size_t count_list(const list_t *h)

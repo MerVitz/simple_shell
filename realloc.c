@@ -19,7 +19,7 @@ char *fill_memory(char *s, char b, unsigned int n)
 /**
  * array_free - deallocates a dynamically allocated array of strings
  * @pp: array of string pointers to be deallocated
- * 
+ *
  * This function iterates through an array of strings, freeing each one,
  * Return: frees the array itself.
  */
@@ -39,8 +39,8 @@ void array_free(char **pp)
  * @ptr: reference to the memory block originally allocated with malloc
  * @old_size: the size of the allocated space for ptr
  * @new_size: the new size of the allocated space
- * 
- * Return: a pointer to the newly allocated memory, which is suitably 
+ *
+ * Return: a pointer to the newly allocated memory, which is suitably
  * aligned for any kind of variable and may be different from ptr.
  */
 void *resize_memory(void *ptr, unsigned int old_size, unsigned int new_size)

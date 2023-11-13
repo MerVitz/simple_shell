@@ -90,7 +90,7 @@ int discard_environment_variable(info_t *info, char *var)
  *
  * Returns the current environment as a string array. If the
  * environment has changed,
- * the array is updated before being returned. Always 
+ * the array is updated before being returned. Always
  * Return: 0.
  */
 char **fetch_environment_snapshot(info_t *info)

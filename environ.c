@@ -4,15 +4,17 @@
  * construct_env_list - creates a linked list from the environment variables
  * @info: shell state information, including the head of the env list
  *
- * Loops over the system environment variables 
+ * Loops over the system environment variables
  * and appends each one to a new linked list.
- * The head of the list is stored in the info structure. 
+ * The head of the list is stored in the info structure.
  * Return: 0.
  */
 int construct_env_list(info_t *info)
 {
 	list_t *node = NULL;
+
 	for (size_t i = 0; environ[i]; i++)
+
 	{
 		add_node_end(&node, environ[i], 0);
 	}
@@ -25,7 +27,7 @@ int construct_env_list(info_t *info)
  * @info: shell state information, used for accessing the env list
  * @name: the name of the environment variable to find
  *
- * Traverses the env linked list to find the variable 
+ * Traverses the env linked list to find the variable
  * 'name' and returns its value.
  * Return: NULL if the variable is not found.
  */
@@ -45,7 +47,8 @@ char *retrieve_env_value(info_t *info, const char *name)
  *
  * Checks for the correct number of arguments and then sets or
  * updates the specified environment variable.
- * Return:  on incorrect arguments or if the _setenv function fails, otherwise 0.
+ * Return:  on incorrect arguments or if the _setenv
+ * function fails, otherwise 0.
  */
 int environment_variable_set(info_t *info)
 {
@@ -63,7 +66,7 @@ int environment_variable_set(info_t *info)
  *
  * Removes the specified environment variables from the env list.
  * If no variables are specified,
- * an error message is printed. 
+ * an error message is printed.
  * Return: 0 after attempting to unset the variables.
  */
 int environment_variable_unset(info_t *info)

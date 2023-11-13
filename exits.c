@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * copy_partial_string - replicates a subset of a source 
+ * copy_partial_string - replicates a subset of a source
  * string to a destination
  * @dest: the target buffer for copying
  * @src: the original string from which to copy characters
@@ -9,12 +9,13 @@
  *
  * This function will copy 'n' characters from 'src' to 'dest'.
  * If 'src' has fewer than 'n'
- * characters, the remainder of 'dest' will be padded with null bytes. 
+ * characters, the remainder of 'dest' will be padded with null bytes.
  * Return: a pointer to the destination string.
  */
 char *copy_partial_string(char *dest, char *src, int n)
 {
 	int index = 0;
+
 	while (src[index] && index < n - 1)
 	{
 		dest[index] = src[index];
@@ -23,11 +24,11 @@ char *copy_partial_string(char *dest, char *src, int n)
 	for (int padding = index; padding < n; padding++)
 		dest[padding] = '\0';
 
-	return dest;
+	return (dest);
 }
 
 /**
- * append_limited_chars - appends characters from one string 
+ * append_limited_chars - appends characters from one string
  * to another up to a limit
  * @dest: the string to be appended to
  * @src: the string to append from
@@ -43,6 +44,7 @@ char *copy_partial_string(char *dest, char *src, int n)
 char *append_limited_chars(char *dest, char *src, int n)
 {
 	int dest_len = 0, src_index = 0;
+
 	while (dest[dest_len])
 		dest_len++;
 	while (src[src_index] && src_index < n)

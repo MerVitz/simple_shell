@@ -22,7 +22,7 @@ int help_command(info_t *info)
  *
  * Attempts to change the current directory based on the arguments provided.
  * If no argument is given, it tries to go to the home directory.
- * Return: can handle relative paths, absolute paths, 
+ * Return: can handle relative paths, absolute paths,
  * and '-' for previous directory.
  */
 int change_directory(info_t *info)
@@ -36,7 +36,7 @@ int change_directory(info_t *info)
 
 	target_dir = info->argv[1] ? info->argv[1] : _getenv(info, "HOME=");
 	if (!target_dir)
-		change_dir_result = chdir(current_dir); 
+		change_dir_result = chdir(current_dir);
 	else if (_strcmp(info->argv[1], "-") == 0)
 	{
 		target_dir = _getenv(info, "OLDPWD=");
@@ -66,7 +66,7 @@ int change_directory(info_t *info)
  *
  * Processes the 'exit' command, extracting an optional exit status.
  * If no status is provided, exits with the current status of the shell.
- * Return: If an invalid status is provided, 
+ * Return: If an invalid status is provided,
  * prints an error and returns.
  */
 int exit_shell(info_t *info)

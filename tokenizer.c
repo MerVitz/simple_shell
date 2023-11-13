@@ -5,7 +5,7 @@
  * based on a single character delimiter
  * @str: the string to be tokenized
  * @d: the delimiter character used to tokenize the string
- * Return: a dynamically allocated array of tokenized strings, 
+ * Return: a dynamically allocated array of tokenized strings,
  * or NULL if memory allocation fails
  */
 char **divide_string(char *str, char d)
@@ -56,7 +56,8 @@ char **divide_string(char *str, char d)
  *
  * This function analyzes a string and separates it into an array
  * of words, ignoring
- * consecutive delimiters and only considering non-delimiter sequences as words.
+ * consecutive delimiters and only considering non-delimiter
+ * sequences as words.
  */
 char **segment_string(char *str, char *d)
 {
