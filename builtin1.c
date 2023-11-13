@@ -4,13 +4,13 @@
  * display_history - outputs the history list with line numbers
  * @info: structure containing shell state, including the history list
  *
- * Iterates through the history list and prints each command 
+ * Iterates through the history list and prints each command
  * with its corresponding line number.
  * Return: 0 after printing the entire history list.
  */
 int display_history(info_t *info)
 {
-	print_list(info->history); 
+	print_list(info->history);
 }
 
 /**
@@ -111,6 +111,7 @@ int manage_alias(info_t *info)
 		for (int i = 1; info->argv[i]; i++)
 		{
 			char *equal_sign_position = _strchr(info->argv[i], '=');
+
 			if (equal_sign_position)
 				set_alias(info, info->argv[i]);
 			else

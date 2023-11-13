@@ -26,7 +26,7 @@ char *replicate_string(char *dest, char *src)
 }
 
 /**
- * generate_duplicate - generates a new memory allocation 
+ * generate_duplicate - generates a new memory allocation
  * containing the same string
  * @str: the original string to duplicate
  *
@@ -53,7 +53,7 @@ char *generate_duplicate(const char *str)
  * echo_string - prints a given string to standard output
  * @str: the string to be echoed
  *
- * By invoking the character-wise output function, 
+ * By invoking the character-wise output function,
  * Return: writes an entire string to stdout.
  */
 void echo_string(char *str)
@@ -74,7 +74,7 @@ void echo_string(char *str)
  * buffering capabilities
  * @c: character to be printed, or control character to manage the buffer
  *
- * This function manages a static buffer to collect characters 
+ * This function manages a static buffer to collect characters
  * and writes them to stdout
  * in a batch. It's designed to be efficient by reducing
  * Return: number of write calls.

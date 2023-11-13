@@ -52,7 +52,7 @@ char *append_limited_chars(char *dest, char *src, int n)
 	if (src_index < n)
 		dest[dest_len] = '\0';
 
-	return dest;
+	return (dest);
 }
 
 /**
@@ -71,9 +71,9 @@ char *find_char(char *s, char c)
 	while (*s)
 	{
 		if (*s == c)
-			return s;
+			return (s);
 		s++;
 	}
 
-	return NULL;
+	return (NULL);
 }
