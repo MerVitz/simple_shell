@@ -1,13 +1,13 @@
 #include "shell.h"
 
 /**
- * update_history_numbers - recalculates the index 
+ * update_history_numbers - recalculates the index
  * numbers of each history entry
  * @info: structure containing shell state, including history list
  *
- * Iterates over the history list, assigning a 
+ * Iterates over the history list, assigning a
  * new sequence number to each entry
- * based on its position. 
+ * based on its position.
  * Return:  the total count of history entries.
  */
 int update_history_numbers(info_t *info)
@@ -21,7 +21,7 @@ int update_history_numbers(info_t *info)
 		node = node->next;
 	}
 	info->histcount = i;
-	return i;
+	return (i);
 }
 
 /**
@@ -31,7 +31,7 @@ int update_history_numbers(info_t *info)
  * @linecount: the line number to assign to the history entry
  *
  * Adds a new entry to the end of the history list using the provided buffer.
- * The linecount is assigned as the entry's index number. Always 
+ * The linecount is assigned as the entry's index number. Always
  * Return:  0.
  */
 int populate_history(info_t *info, char *buf, int linecount)
@@ -57,7 +57,7 @@ int populate_history(info_t *info, char *buf, int linecount)
  * @info: pointer to the shell state structure containing the history list
  *
  * Opens the history file and reads its contents into the history list.
- * Each line is added as a separate entry. 
+ * Each line is added as a separate entry.
  * Return: the total number of history entries.
  */
 int fetch_history(info_t *info)
@@ -134,14 +134,14 @@ int save_history(info_t *info)
 }
 
 /**
- * locate_history_file - finds or creates the file used 
+ * locate_history_file - finds or creates the file used
  * to store command history
  * @info: pointer to the shell state structure
  * containing environment variables
  *
  * Checks the HOME environment variable to determine the
  * directory for the history file,
- * then constructs the full path to the history file. 
+ * then constructs the full path to the history file.
  * Return: the path as a string.
  */
 char *locate_history_file(info_t *info)
