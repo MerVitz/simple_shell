@@ -4,9 +4,9 @@
  * remove_comments - nullifies comments within a command line
  * @buf: pointer to the command line string
  *
- * Scans the command line for a '#' character that signifies the start of 
+ * Scans the command line for a '#' character that signifies the start of
  * a comment.
- * If found, the function replaces it with a null 
+ * If found, the function replaces it with a null
  * character to ignore the comment.
  */
 void remove_comments(char *buf)
@@ -39,8 +39,8 @@ char *convert_number(long int num, int base, int flags)
 
 	if (!(flags & CONVERT_UNSIGNED) && num < 0)
 	{
-		n = -num; 
-		sign = '-'; 
+		n = -num;
+		sign = '-';
 	}
 
 	digits = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
@@ -55,7 +55,7 @@ char *convert_number(long int num, int base, int flags)
 	if (sign)
 		*--ptr = sign;
 
-	return (ptr); 
+	return (ptr);
 }
 
 /**
@@ -77,27 +77,27 @@ int print_d(int input, int fd)
 
 	if (input < 0)
 	{
-		absolute = -input; 
-		printer('-'); 
-		count++; 
+		absolute = -input;
+		printer('-');
+		count++;
 	}
 	else
 		absolute = input;
 
 	current = absolute;
-	for (i = 1000000000; i > 1; i /= 10) 
+	for (i = 1000000000; i > 1; i /= 10
 	{
 		if (absolute / i)
 		{
-			printer('0' + current / i); 
-			count++; 
+			printer('0' + current / i);
+			count++;
 		}
-		current %= i; 
+		current %= i;
 	}
-	printer('0' + current); 
-	count++; 
+	printer('0' + current);
+	count++;
 
-	return (count); 
+	return (count);
 }
 
 /**
@@ -111,13 +111,13 @@ int print_d(int input, int fd)
  */
 void print_error(info_t *info, char *error_msg)
 {
-	_eputs(info->fname); 
+	_eputs(info->fname);
 	_eputs(": ");
-	print_d(info->line_count, STDERR_FILENO); 
+	print_d(info->line_count, STDERR_FILENO);
 	_eputs(": ");
-	_eputs(info->argv[0]); 
+	_eputs(info->argv[0]);
 	_eputs(": ");
-	_eputs(error_msg); 
+	_eputs(error_msg);
 }
 
 /**
@@ -133,18 +133,18 @@ int _erratoi(char *s)
 	unsigned long int result = 0;
 
 	if (*s == '+')
-		s++; 
+		s++;
 
 	for (i = 0; s[i] != '\0'; i++)
 	{
-		if (s[i] >= '0' && s[i] <= '9') 
+		if (s[i] >= '0' && s[i] <= '9')
 		{
-			result = result * 10 + (s[i] - '0'); 
+			result = result * 10 + (s[i] - '0');
 			if (result > INT_MAX)
-				return (-1); 
+				return (-1);
 		}
 		else
-			return (-1); 
+			return (-1);
 	}
 	return (result);
 }

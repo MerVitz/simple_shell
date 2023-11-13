@@ -38,14 +38,14 @@ ssize_t read_buf(info_t *info, char *buf, size_t *i)
 
 /**
  * _getline - retrieves a line of input from a file descriptor
- * @info: pointer to the shell info structure containing file 
+ * @info: pointer to the shell info structure containing file
  * descriptor for input
  * @ptr: address of pointer to buffer, to store the input line
  * @length: size of preallocated buffer if not NULL
  *
- * Reads input until a newline or EOF is encountered. It manages 
+ * Reads input until a newline or EOF is encountered. It manages
  * a static buffer to
- * keep track of the input state across multiple calls. 
+ * keep track of the input state across multiple calls.
  * Return: the length of the line read.
  */
 int _getline(info_t *info, char **ptr, size_t *length)

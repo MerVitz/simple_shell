@@ -6,7 +6,7 @@
  *
  * Parses the string to extract an integer value.
  * Handles negative numbers by detecting a '-' sign.
- * The conversion continues until a non-digit character is encountered if 
+ * The conversion continues until a non-digit character is encountered if
  * an initial digit has been identified.
  * Return: Zero if no number are in the string otherwise, converted number
  */
@@ -22,14 +22,14 @@ int _atoi(char *s)
 
 		if (s[i] >= '0' && s[i] <= '9')
 		{
-			flag = 1; 
+			flag = 1;
 			result = result * 10 + (s[i] - '0');
 		}
-		else if (flag == 1) 
+		else if (flag == 1)
 			flag = 2;
 	}
 
-	output = sign == -1 ? -result : result; 
+	output = sign == -1 ? -result : result;
 	return (output);
 }
 
@@ -66,7 +66,8 @@ int is_delim(char c, char *delim)
  * interactive - assesses if the shell is running in interactive mode
  * @info: shell state information
  *
- * Determines if the shell is interacting with a user or running from a script by checking the file descriptor.
+ * Determines if the shell is interacting with a user or running 
+ * from a script by checking the file descriptor.
  * Return: 1 for interactive mode, 0 for non-interactive.
  */
 int interactive(info_t *info)

@@ -101,7 +101,7 @@ int load_history(info_t *info)
 /**
  * update_history_numbers - updates the index numbers of each history entry
  * @info: the shell state structure
- * Returns: the updated number of history entries
+ * Return: the updated number of history entries
  */
 int update_history_numbers(info_t *info)
 {
