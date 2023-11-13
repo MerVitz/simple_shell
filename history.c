@@ -1,36 +1,12 @@
 #include "shell.h"
 
-/**
- * get_history_file - gets the history file
- * @info: parameter struct
- *
- * Return: allocated string containg history file
- */
-
-char *get_history_file(info_t *info)
-{
-	char *buf, *dir;
-
-	dir = _getenv(info, "HOME=");
-	if (!dir)
-		return (NULL);
-	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
-	if (!buf)
-		return (NULL);
-	buf[0] = 0;
-	_strcpy(buf, dir);
-	_strcat(buf, "/");
-	_strcat(buf, HIST_FILE);
-	return (buf);
-}
 
 /**
- * write_history - creates a file, or appends to an existing file
- * @info: the parameter struct
- *
- * Return: 1 on success, else -1
+ * store_history - saves the history to a file
+ * @info: the structure containing the shell's state
+ * Return: 1 on success, -1 on failure
  */
-int write_history(info_t *info)
+int store_history(info_t *info)
 {
 	ssize_t fd;
 	char *filename = get_history_file(info);
@@ -54,12 +30,32 @@ int write_history(info_t *info)
 }
 
 /**
- * read_history - reads history from file
- * @info: the parameter struct
- *
- * Return: histcount on success, 0 otherwise
+ * locate_history_file - determines the location of the history file
+ * @info: structure containing shell state information
+ * Return: a dynamically allocated string with the path to the history file
  */
-int read_history(info_t *info)
+char *locate_history_file(info_t *info)
+{
+	char *buf, *dir;
+
+	dir = _getenv(info, "HOME=");
+	if (!dir)
+		return (NULL);
+	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
+	if (!buf)
+		return (NULL);
+	buf[0] = 0;
+	_strcpy(buf, dir);
+	_strcat(buf, "/");
+	_strcat(buf, HIST_FILE);
+	return (buf);
+}
+/**
+ * load_history - retrieves history from a file
+ * @info: the shell state structure
+ * Return: the number of history entries on success, 0 on failure
+ */
+int load_history(info_t *info)
 {
 	int i, last = 0, linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
@@ -103,14 +99,31 @@ int read_history(info_t *info)
 }
 
 /**
- * build_history_list - adds entry to a history linked list
- * @info: Structure containing potential arguments. Used to maintain
- * @buf: buffer
- * @linecount: the history linecount, histcount
- *
+ * update_history_numbers - updates the index numbers of each history entry
+ * @info: the shell state structure
+ * Returns: the updated number of history entries
+ */
+int update_history_numbers(info_t *info)
+{
+	list_t *node = info->history;
+	int i = 0;
+
+	while (node)
+	{
+		node->num = i++;
+		node = node->next;
+	}
+	return (info->histcount = i);
+}
+
+/**
+ * insert_history_entry - adds a new entry to the history list
+ * @info: the shell's state structure
+ * @buf: the string to add to history
+ * @linecount: the current count of history entries
  * Return: Always 0
  */
-int build_history_list(info_t *info, char *buf, int linecount)
+int insert_history_entry(info_t *info, char *buf, int linecount)
 {
 	list_t *node = NULL;
 
@@ -123,21 +136,5 @@ int build_history_list(info_t *info, char *buf, int linecount)
 	return (0);
 }
 
-/**
- * renumber_history - renumbers the history linked list after changes
- * @info: Structure containing potential arguments. Used to maintain
- *
- * Return: the new histcount
- */
-int renumber_history(info_t *info)
-{
-	list_t *node = info->history;
-	int i = 0;
 
-	while (node)
-	{
-		node->num = i++;
-		node = node->next;
-	}
-	return (info->histcount = i);
-}
+
