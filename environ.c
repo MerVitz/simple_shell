@@ -73,7 +73,7 @@ int environment_variable_unset(info_t *info)
 {
 	if (info->argc < 2)
 	{
-		_eputs("Too few arguments.\n");
+		puts("Too few arguments.\n");
 		return (1);
 	}
 	for (int i = 1; i < info->argc; i++)
