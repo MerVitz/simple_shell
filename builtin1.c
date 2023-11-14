@@ -34,7 +34,7 @@ int remove_alias(info_t *info, char *str)
 
 	*equal_sign_position = '\0';
 	result = remove_node_by_index(&(info->alias),
-		retrieve_node_index(info->alias, starts_with(info->alias->str, str));
+		retrieve_node_index(info->alias, starts_with(info->alias->str, str)));
 	*equal_sign_position = '=';
 	return (result);
 }
@@ -78,11 +78,11 @@ int output_alias(list_t *node)
 
 	if (node)
 	{
-		equal_sign_position = _strchr(node->str, '=');
+		equal_sign_position = strchr(node->str, '=');
 		for (alias_name = node->str; alias_name <= equal_sign_position; alias_name++)
 			putchar(*alias_name);
 
-		_putchar('\'');
+		putchar('\'');
 		puts(equal_sign_position + 1);
 		puts("'\n");
 		return (0);
