@@ -85,7 +85,7 @@ size_t display_list_strings(const list_t *h)
 
 	while (h)
 	{
-		_puts(h->str ? h->str : "(nil)");
+		puts(h->str ? h->str : "(nil)");
 		_puts("\n");
 		h = h->next;
 		nodes++;
@@ -111,9 +111,9 @@ list_t *append_node_to_end(list_t **head, const char *str, int num)
 	new_node = malloc(sizeof(list_t));
 	if (new_node == NULL)
 		return (NULL);
-	_memset((void *)new_node, 0, sizeof(list_t));
+	memset((void *)new_node, 0, sizeof(list_t));
 	new_node->num = num;
-	new_node->str = str ? _strdup(str) : NULL;
+	new_node->str = str ? strdup(str) : NULL;
 	if (new_node->str == NULL && str)
 	{
 		free(new_node);
