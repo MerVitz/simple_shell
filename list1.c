@@ -64,9 +64,9 @@ size_t echo_list(const list_t *h)
 	{
 		puts(convert_number(h->num, 10, 0));
 		putchar(':');
-		_putchar(' ');
-		_puts(h->str ? h->str : "(nil)");
-		_puts("\n");
+		putchar(' ');
+		puts(h->str ? h->str : "(nil)");
+		puts("\n");
 		h = h->next;
 		i++;
 	}
