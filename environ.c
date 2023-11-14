@@ -54,10 +54,10 @@ int environment_variable_set(info_t *info)
 {
 	if (info->argc != 3)
 	{
-		_eputs("Incorrect number of arguments\n");
+		puts("Incorrect number of arguments\n");
 		return (1);
 	}
-	return (_setenv(info, info->argv[1], info->argv[2]) ? 0 : 1);
+	return (setenv(info, info->argv[1], info->argv[2]) ? 0 : 1);
 }
 
 /**
@@ -78,7 +78,7 @@ int environment_variable_unset(info_t *info)
 	}
 	for (int i = 1; i < info->argc; i++)
 	{
-		_unsetenv(info, info->argv[i]);
+		unsetenv(info, info->argv[i]);
 	}
 	return (0);
 }
