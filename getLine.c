@@ -9,9 +9,9 @@
  */
 void sigintHandler(__attribute__((unused))int sig_num)
 {
-	_puts("\n");
+	puts("\n");
 	_puts("$ ");
-	_putchar(BUF_FLUSH);
+	putchar(BUF_FLUSH);
 }
 
 /**
@@ -66,16 +66,16 @@ int _getline(info_t *info, char **ptr, size_t *length)
 	if (r == -1 || (r == 0 && len == 0))
 		return (-1);
 
-	c = _strchr(buf + i, '\n');
+	c = strchr(buf + i, '\n');
 	k = c ? 1 + (unsigned int)(c - buf) : len;
-	new_p = _realloc(p, s, s ? s + k : k + 1);
+	new_p = realloc(p, s, s ? s + k : k + 1);
 	if (!new_p)
 		return (p ? free(p), -1 : -1);
 
 	if (s)
 		_strncat(new_p, buf + i, k - i);
 	else
-		_strncpy(new_p, buf + i, k - i + 1);
+		strncpy(new_p, buf + i, k - i + 1);
 
 	s += k - i;
 	i = k;
@@ -156,7 +156,7 @@ ssize_t get_input(info_t *info)
 		j = i;
 		p = buf + i;
 
-		check_chain(info, buf, &j, i, len);
+		detect_chain(info, buf, &j, i, len);
 		while (j < len)
 		{
 			if (is_chain(info, buf, &j))
