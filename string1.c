@@ -45,7 +45,7 @@ char *generate_duplicate(const char *str)
 	ret = malloc(sizeof(char) * (length + 1));
 	if (!ret)
 		return (NULL);
-	_strcpy(ret, str);
+	strcpy(ret, str);
 	return (ret);
 }
 
