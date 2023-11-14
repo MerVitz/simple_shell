@@ -85,7 +85,7 @@ int print_d(int input, int fd)
 		absolute = input;
 
 	current = absolute;
-	for (i = 1000000000; i > 1; i /= 10
+	for (i = 1000000000; i > 1; i /= 10)
 	{
 		if (absolute / i)
 		{
@@ -112,12 +112,12 @@ int print_d(int input, int fd)
 void print_error(info_t *info, char *error_msg)
 {
 	puts(info->fname);
-	_eputs(": ");
+	puts(": ");
 	print_d(info->line_count, STDERR_FILENO);
-	_eputs(": ");
-	_eputs(info->argv[0]);
-	_eputs(": ");
-	_eputs(error_msg);
+	puts(": ");
+	puts(info->argv[0]);
+	puts(": ");
+	puts(error_msg);
 }
 
 /**
