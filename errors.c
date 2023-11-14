@@ -79,6 +79,6 @@ void print_error_string(char *str)
 {
 	while (str && *str)
 	{
-		_eputchar(*str++);
+		putchar(*str++);
 	}
 }
