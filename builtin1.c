@@ -33,7 +33,7 @@ int remove_alias(info_t *info, char *str)
 		return (1);
 
 	*equal_sign_position = '\0';
-	result = remove_node_at_index(&(info->alias),
+	result = remove_node_by_index(&(info->alias),
 		retrieve_node_index(info->alias, starts_with(info->alias, str, -1)));
 	*equal_sign_position = '=';
 	return (result);
@@ -52,14 +52,14 @@ int create_or_update_alias(info_t *info, char *str)
 {
 	char *equal_sign_position;
 
-	equal_sign_position = _strchr(str, '=');
+	equal_sign_position = strchr(str, '=');
 	if (!equal_sign_position)
 		return (1);
 
 	if (!*(equal_sign_position + 1))
 		return (output_alias(info, str));
 
-	unset_alias(info, str);
+	output_alias(info, str);
 	return (add_node_end(&(info->alias), str, 0) == NULL);
 }
 
@@ -80,11 +80,11 @@ int output_alias(list_t *node)
 	{
 		equal_sign_position = _strchr(node->str, '=');
 		for (alias_name = node->str; alias_name <= equal_sign_position; alias_name++)
-			_putchar(*alias_name);
+			putchar(*alias_name);
 
 		_putchar('\'');
-		_puts(equal_sign_position + 1);
-		_puts("'\n");
+		puts(equal_sign_position + 1);
+		puts("'\n");
 		return (0);
 	}
 	return (1);
@@ -115,7 +115,7 @@ int manage_alias(info_t *info)
 			if (equal_sign_position)
 				set_alias(info, info->argv[i]);
 			else
-				print_alias(node_starts_with(info->alias, info->argv[i], '='));
+				print_alias(starts_with(info->alias, info->argv[i], '='));
 		}
 	}
 
