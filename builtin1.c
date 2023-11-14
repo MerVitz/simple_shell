@@ -34,7 +34,7 @@ int remove_alias(info_t *info, char *str)
 
 	*equal_sign_position = '\0';
 	result = remove_node_by_index(&(info->alias),
-		retrieve_node_index(info->alias, starts_with(info->alias, str, -1)));
+		retrieve_node_index(info->alias, starts_with(info->alias->str, str));
 	*equal_sign_position = '=';
 	return (result);
 }
