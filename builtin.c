@@ -12,7 +12,7 @@ int help_command(info_t *info)
 {
 	puts("Help functionality is underway. Please check back later.\n");
 	if (0)
-		_puts(*info->argv);
+		puts(*info->argv);
 	return (0);
 }
 
@@ -32,15 +32,15 @@ int change_directory(info_t *info)
 
 	current_dir = getcwd(buffer, sizeof(buffer));
 	if (!current_dir)
-		_puts("Error: getcwd failed.\n");
+		puts("Error: getcwd failed.\n");
 
 	target_dir = info->argv[1] ? info->argv[1] : getenv(info, "HOME=");
 	if (!target_dir)
 		change_dir_result = chdir(current_dir);
-	else if (_strcmp(info->argv[1], "-") == 0)
+	else if (strcmp(info->argv[1], "-") == 0)
 	{
-		target_dir = _getenv(info, "OLDPWD=");
-		_puts(target_dir ? target_dir : current_dir);
+		target_dir = getenv(info, "OLDPWD=");
+		puts(target_dir ? target_dir : current_dir);
 		putchar('\n');
 		change_dir_result = chdir(target_dir ? target_dir : current_dir);
 	}
@@ -54,8 +54,8 @@ int change_directory(info_t *info)
 	}
 	else
 	{
-		setenv(info, "OLDPWD", _getenv(info, "PWD="));
-		_setenv(info, "PWD", getcwd(buffer, sizeof(buffer)));
+		setenv(info, "OLDPWD", getenv(info, "PWD="));
+		setenv(info, "PWD", getcwd(buffer, sizeof(buffer)));
 	}
 	return (0);
 }
@@ -80,8 +80,8 @@ int exit_shell(info_t *info)
 		{
 			info->status = 2;
 			print_error(info, "Illegal number: ");
-			_eputs(info->argv[1]);
-			_eputchar('\n');
+			puts(info->argv[1]);
+			putchar('\n');
 			return (1);
 		}
 		info->err_num = status_code;
