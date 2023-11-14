@@ -10,7 +10,7 @@
  */
 int display_history(info_t *info)
 {
-	print_list(info->history);
+	count_list(info->history);
 }
 
 /**
@@ -28,13 +28,13 @@ int remove_alias(info_t *info, char *str)
 	char *equal_sign_position;
 	int result;
 
-	equal_sign_position = _strchr(str, '=');
+	equal_sign_position = strchr(str, '=');
 	if (!equal_sign_position)
 		return (1);
 
 	*equal_sign_position = '\0';
-	result = delete_node_at_index(&(info->alias),
-		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
+	result = remove_node_at_index(&(info->alias),
+		retrieve_node_index(info->alias, starts_with(info->alias, str, -1)));
 	*equal_sign_position = '=';
 	return (result);
 }
@@ -57,7 +57,7 @@ int create_or_update_alias(info_t *info, char *str)
 		return (1);
 
 	if (!*(equal_sign_position + 1))
-		return (unset_alias(info, str));
+		return (output_alias(info, str));
 
 	unset_alias(info, str);
 	return (add_node_end(&(info->alias), str, 0) == NULL);
