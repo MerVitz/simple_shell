@@ -10,7 +10,7 @@
  */
 int help_command(info_t *info)
 {
-	_puts("Help functionality is underway. Please check back later.\n");
+	puts("Help functionality is underway. Please check back later.\n");
 	if (0)
 		_puts(*info->argv);
 	return (0);
@@ -34,14 +34,14 @@ int change_directory(info_t *info)
 	if (!current_dir)
 		_puts("Error: getcwd failed.\n");
 
-	target_dir = info->argv[1] ? info->argv[1] : _getenv(info, "HOME=");
+	target_dir = info->argv[1] ? info->argv[1] : getenv(info, "HOME=");
 	if (!target_dir)
 		change_dir_result = chdir(current_dir);
 	else if (_strcmp(info->argv[1], "-") == 0)
 	{
 		target_dir = _getenv(info, "OLDPWD=");
 		_puts(target_dir ? target_dir : current_dir);
-		_putchar('\n');
+		putchar('\n');
 		change_dir_result = chdir(target_dir ? target_dir : current_dir);
 	}
 	else
@@ -50,11 +50,11 @@ int change_directory(info_t *info)
 	if (change_dir_result == -1)
 	{
 		print_error(info, "can't cd to ");
-		_eputs(target_dir), _eputchar('\n');
+		puts(target_dir), putchar('\n');
 	}
 	else
 	{
-		_setenv(info, "OLDPWD", _getenv(info, "PWD="));
+		setenv(info, "OLDPWD", _getenv(info, "PWD="));
 		_setenv(info, "PWD", getcwd(buffer, sizeof(buffer)));
 	}
 	return (0);
