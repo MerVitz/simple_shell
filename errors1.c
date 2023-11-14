@@ -68,12 +68,12 @@ char *convert_number(long int num, int base, int flags)
  */
 int print_d(int input, int fd)
 {
-	int (*printer)(char) = _putchar;
+	int (*printer)(char) = putchar;
 	int i, count = 0;
 	unsigned int absolute, current;
 
 	if (fd == STDERR_FILENO)
-		printer = _eputchar;
+		printer = putchar;
 
 	if (input < 0)
 	{
@@ -111,7 +111,7 @@ int print_d(int input, int fd)
  */
 void print_error(info_t *info, char *error_msg)
 {
-	_eputs(info->fname);
+	puts(info->fname);
 	_eputs(": ");
 	print_d(info->line_count, STDERR_FILENO);
 	_eputs(": ");
