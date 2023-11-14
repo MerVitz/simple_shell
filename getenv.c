@@ -25,7 +25,7 @@ int modify_environment(info_t *info, char *var, char *value)
 	if (!buffer)
 		return (1);
 
-	_strcpy(buffer, var);
+	strcpy(buffer, var);
 	_strcat(buffer, "=");
 	_strcat(buffer, value);
 
@@ -72,7 +72,7 @@ int discard_environment_variable(info_t *info, char *var)
 		start_match = starts_with(current_node->str, var);
 		if (start_match && *start_match == '=')
 		{
-			info->env_changed = delete_node_at_index(&(info->env), index);
+			info->env_changed = remove_node_by_index(&(info->env), index);
 			index = 0;
 			current_node = info->env;
 			continue;
@@ -97,7 +97,7 @@ char **fetch_environment_snapshot(info_t *info)
 {
 	if (!info->environ || info->env_changed)
 	{
-		ffree(info->environ);
+		bfree(info->environ);
 		info->environ = list_to_strings(info->env);
 		info->env_changed = 0;
 	}
