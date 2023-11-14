@@ -10,7 +10,7 @@
 void sigintHandler(__attribute__((unused))int sig_num)
 {
 	puts("\n");
-	_puts("$ ");
+	puts("$ ");
 	putchar(BUF_FLUSH);
 }
 
@@ -112,7 +112,7 @@ ssize_t input_buf(info_t *info, char **buf, size_t *len)
 #if USE_GETLINE
 		r = getline(buf, &len_p, stdin);
 #else
-		r = _getline(info, buf, &len_p);
+		r = getline(info, buf, &len_p);
 #endif
 		if (r > 0)
 		{
@@ -147,7 +147,7 @@ ssize_t get_input(info_t *info)
 	ssize_t r = 0;
 	char **buf_p = &(info->arg), *p;
 
-	_putchar(BUF_FLUSH);
+	putchar(BUF_FLUSH);
 	r = input_buf(info, &buf, &len);
 	if (r == -1)
 		return (-1);
