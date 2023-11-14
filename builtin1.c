@@ -110,7 +110,7 @@ int manage_alias(info_t *info)
 	{
 		for (int i = 1; info->argv[i]; i++)
 		{
-			char *equal_sign_position = _strchr(info->argv[i], '=');
+			char *equal_sign_position = strchr(info->argv[i], '=');
 
 			if (equal_sign_position)
 				set_alias(info, info->argv[i]);
