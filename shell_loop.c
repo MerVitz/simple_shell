@@ -22,7 +22,7 @@ void fork_cmd(info_t *info)
 	{
 		if (execve(info->path, info->argv, get_environ(info)) == -1)
 		{
-			free_info(info, 1);
+			reset_info(info, 1);
 			if (errno == EACCES)
 				exit(126);
 			exit(1);
@@ -64,7 +64,7 @@ void find_cmd(info_t *info)
 	if (!k)
 		return;
 
-	path = find_path(info, _getenv(info, "PATH="), info->argv[0]);
+	path = find_path(info, getenv(info, "PATH="), info->argv[0]);
 	if (path)
 	{
 		info->path = path;
@@ -73,7 +73,7 @@ void find_cmd(info_t *info)
 	else
 	{
 		if ((interactive(info) || _getenv(info, "PATH=")
-			|| info->argv[0][0] == '/') && is_cmd(info, info->argv[0]))
+			|| info->argv[0][0] == '/') && find_cmd(info, info->argv[0]))
 			fork_cmd(info);
 		else if (*(info->arg) != '\n')
 		{
@@ -95,12 +95,12 @@ int seek_builtin(info_t *info)
 {
 	int i, built_in_ret = -1;
 	builtin_table builtintbl[] = {
-		{"exit", _myexit},
+		{"exit", _exit},
 		{"env", _myenv},
 		{"help", _myhelp},
 		{"history", _myhistory},
-		{"setenv", _mysetenv},
-		{"unsetenv", _myunsetenv},
+		{"setenv", unsetenv},
+		{"unsetenv", unsetenv},
 		{"cd", _mycd},
 		{"alias", _myalias},
 		{NULL, NULL}
@@ -133,21 +133,21 @@ int shell_cycle(info_t *info, char **av)
 	{
 		clear_info(info);
 		if (interactive(info))
-			_puts("$ ");
-		_eputchar(BUF_FLUSH);
+			puts("$ ");
+		putchar(BUF_FLUSH);
 		r = get_input(info);
 		if (r != -1)
 		{
-			set_info(info, av);
-			builtin_ret = find_builtin(info);
+			reset_info(info, av);
+			builtin_ret = seek_builtin(info);
 			if (builtin_ret == -1)
 				find_cmd(info);
 		}
 		else if (interactive(info))
-			_putchar('\n');
+			putchar('\n');
 		free_info(info, 0);
 	}
-	write_history(info);
+	store_history(info);
 	free_info(info, 1);
 	if (!interactive(info) && info->status)
 		exit(info->status);
