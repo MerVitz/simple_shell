@@ -1,10 +1,14 @@
 #include "shell.h"
 
 /**
- * get_environ - returns the string array copy of our environ
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- * Return: Always 0
+ * get_environ - Retrieves the current environment
+ * variable array
+ * @info: Structure containing shell state, including environment variables
+ *
+ * Returns the current environment as a string array. If the
+ * environment has changed,
+ * the array is updated before being returned. Always
+ * Return: 0.
  */
 char **get_environ(info_t *info)
 {
@@ -18,11 +22,13 @@ char **get_environ(info_t *info)
 }
 
 /**
- * _unsetenv - Remove an environment variable
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- *  Return: 1 on delete, 0 otherwise
- * @var: the string env var property
+ * _unsetenv - Deletes an environment variable
+ * @info: Structure with shell information and the environment list
+ * @var: Variable name to search for and delete
+ *
+ * Iterates over the environment list to find and remove
+ * the variable 'var'.
+ * Return: 1 if the variable was deleted, 0 otherwise.
  */
 int _unsetenv(info_t *info, char *var)
 {
@@ -50,13 +56,16 @@ int _unsetenv(info_t *info, char *var)
 }
 
 /**
- * _setenv - Initialize a new environment variable,
- *             or modify an existing one
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- * @var: the string env var property
- * @value: the string env var value
- *  Return: Always 0
+ * _setenv - Changes or adds an environment variable
+ * @info: Pointer to the main shell info structure
+ * @var: The environment variable to set or modify
+ * @value: The value to assign to the environment variable
+ *
+ * Allocates a new buffer and constructs the environment
+ * string as 'VAR=VALUE'.
+ * If the variable already exists, it updates the value;
+ * otherwise, it adds a new variable.
+ * Return: 0 on success, 1 on memory allocation failure.
  */
 int _setenv(info_t *info, char *var, char *value)
 {
