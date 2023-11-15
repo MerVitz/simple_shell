@@ -1,15 +1,39 @@
 #include "shell.h"
 
+/**
+ * get_history_file - gets the history file
+ * @info: parameter struct
+ *
+ * Return: allocated string containg history file
+ */
+
+char *get_history_file(info_t *info)
+{
+	char *buf, *dir;
+
+	dir = _getenv(info, "HOME=");
+	if (!dir)
+		return (NULL);
+	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
+	if (!buf)
+		return (NULL);
+	buf[0] = 0;
+	_strcpy(buf, dir);
+	_strcat(buf, "/");
+	_strcat(buf, HIST_FILE);
+	return (buf);
+}
 
 /**
- * store_history - saves the history to a file
- * @info: the structure containing the shell's state
- * Return: 1 on success, -1 on failure
+ * write_history - creates a file, or appends to an existing file
+ * @info: the parameter struct
+ *
+ * Return: 1 on success, else -1
  */
-int store_history(info_t *info)
+int write_history(info_t *info)
 {
 	ssize_t fd;
-	char *filename = locate_history_file(info);
+	char *filename = get_history_file(info);
 	list_t *node = NULL;
 
 	if (!filename)
@@ -21,7 +45,7 @@ int store_history(info_t *info)
 		return (-1);
 	for (node = info->history; node; node = node->next)
 	{
-		puts(node->str, fd);
+		_putsfd(node->str, fd);
 		_putfd('\n', fd);
 	}
 	_putfd(BUF_FLUSH, fd);
@@ -30,37 +54,17 @@ int store_history(info_t *info)
 }
 
 /**
- * locate_history_file - determines the location of the history file
- * @info: structure containing shell state information
- * Return: a dynamically allocated string with the path to the history file
+ * read_history - reads history from file
+ * @info: the parameter struct
+ *
+ * Return: histcount on success, 0 otherwise
  */
-char *locate_history_file(info_t *info)
-{
-	char *buf, *dir;
-
-	dir = getenv(info, "HOME=");
-	if (!dir)
-		return (NULL);
-	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
-	if (!buf)
-		return (NULL);
-	buf[0] = 0;
-	strcpy(buf, dir);
-	_strcat(buf, "/");
-	_strcat(buf, HIST_FILE);
-	return (buf);
-}
-/**
- * load_history - retrieves history from a file
- * @info: the shell state structure
- * Return: the number of history entries on success, 0 on failure
- */
-int load_history(info_t *info)
+int read_history(info_t *info)
 {
 	int i, last = 0, linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
 	struct stat st;
-	char *buf = NULL, *filename = locate_history_file(info);
+	char *buf = NULL, *filename = get_history_file(info);
 
 	if (!filename)
 		return (0);
@@ -93,37 +97,20 @@ int load_history(info_t *info)
 	free(buf);
 	info->histcount = linecount;
 	while (info->histcount-- >= HIST_MAX)
-		remove_node_by_index(&(info->history), 0);
+		delete_node_at_index(&(info->history), 0);
 	renumber_history(info);
 	return (info->histcount);
 }
 
 /**
- * update_history_numbers - updates the index numbers of each history entry
- * @info: the shell state structure
- * Return: the updated number of history entries
- */
-int update_history_numbers(info_t *info)
-{
-	list_t *node = info->history;
-	int i = 0;
-
-	while (node)
-	{
-		node->num = i++;
-		node = node->next;
-	}
-	return (info->histcount = i);
-}
-
-/**
- * insert_history_entry - adds a new entry to the history list
- * @info: the shell's state structure
- * @buf: the string to add to history
- * @linecount: the current count of history entries
+ * build_history_list - adds entry to a history linked list
+ * @info: Structure containing potential arguments. Used to maintain
+ * @buf: buffer
+ * @linecount: the history linecount, histcount
+ *
  * Return: Always 0
  */
-int insert_history_entry(info_t *info, char *buf, int linecount)
+int build_history_list(info_t *info, char *buf, int linecount)
 {
 	list_t *node = NULL;
 
@@ -136,5 +123,21 @@ int insert_history_entry(info_t *info, char *buf, int linecount)
 	return (0);
 }
 
+/**
+ * renumber_history - renumbers the history linked list after changes
+ * @info: Structure containing potential arguments. Used to maintain
+ *
+ * Return: the new histcount
+ */
+int renumber_history(info_t *info)
+{
+	list_t *node = info->history;
+	int i = 0;
 
-
+	while (node)
+	{
+		node->num = i++;
+		node = node->next;
+	}
+	return (info->histcount = i);
+}
