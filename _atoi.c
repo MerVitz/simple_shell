@@ -1,6 +1,20 @@
 #include "shell.h"
 
 /**
+ * _isalpha - determines if a character is an alphabetic letter
+ * @c: the character to be checked
+ *
+ * Return: 1 if the character is a letter, 0 otherwise.
+ */
+int _isalpha(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	else
+		return (0);
+}
+
+/**
  * _atoi - converts string to integer, ignoring non-numeric leading characters
  * @s: the string that represents an integer
  *
@@ -34,18 +48,18 @@ int _atoi(char *s)
 }
 
 /**
- * _isalpha - determines if a character is an alphabetic letter
- * @c: the character to be checked
+ * interactive - assesses if the shell is running in interactive mode
+ * @info: shell state information
  *
- * Return: 1 if the character is a letter, 0 otherwise.
+ * Determines if the shell is interacting with a user or running
+ * from a script by checking the file descriptor.
+ * Return: 1 for interactive mode, 0 for non-interactive.
  */
-int _isalpha(int c)
+int interactive(info_t *info)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	else
-		return (0);
+	return (isatty(STDIN_FILENO) && info->readfd <= 2);
 }
+
 
 /**
  * is_delim - checks if a character is among a set of delimiters
@@ -60,17 +74,4 @@ int is_delim(char c, char *delim)
 		if (*delim++ == c)
 			return (1);
 	return (0);
-}
-
-/**
- * interactive - assesses if the shell is running in interactive mode
- * @info: shell state information
- *
- * Determines if the shell is interacting with a user or running
- * from a script by checking the file descriptor.
- * Return: 1 for interactive mode, 0 for non-interactive.
- */
-int interactive(info_t *info)
-{
-	return (isatty(STDIN_FILENO) && info->readfd <= 2);
 }
