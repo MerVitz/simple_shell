@@ -1,10 +1,11 @@
 #include "shell.h"
 
 /**
- * _erratoi - converts a string to an integer
- * @s: the string to be converted
- * Return: 0 if no numbers in string, converted number otherwise
- *       -1 on error
+ * _erratoi - converts an error string to an integer
+ * @s: the error string to convert
+ *
+ * Analyzes an error string to extract the numeric value it represents.
+ * Return: the integer value of the string or -1 if conversion isn't possible.
  */
 int _erratoi(char *s)
 {
@@ -29,11 +30,13 @@ int _erratoi(char *s)
 }
 
 /**
- * print_error - prints an error message
- * @info: the parameter & return info struct
- * @estr: string containing specified error type
- * Return: 0 if no numbers in string, converted number otherwise
- *        -1 on error
+ * print_error - outputs an error message with context information
+ * @info: the shell info structure containing program and argument details
+ * @estr: the error message to print
+ *
+ * Constructs and prints a formatted error message to standard error
+ * , including the
+ * shell program name, the line number, and the command that caused the error.
  */
 void print_error(info_t *info, char *estr)
 {
@@ -47,11 +50,12 @@ void print_error(info_t *info, char *estr)
 }
 
 /**
- * print_d - function prints a decimal (integer) number (base 10)
- * @input: the input
- * @fd: the filedescriptor to write to
+ * print_d - prints an integer to a specified file descriptor
+ * @input: the integer to print
+ * @fd: the file descriptor to print to
  *
- * Return: number of characters printed
+ * Outputs an integer as a sequence of characters to the given file descriptor.
+ * Return: Handles negative numbers and prints the corresponding '-' sign.
  */
 int print_d(int input, int fd)
 {
@@ -86,12 +90,14 @@ int print_d(int input, int fd)
 }
 
 /**
- * convert_number - converter function, a clone of itoa
- * @num: number
- * @base: base
- * @flags: argument flags
+ * convert_number - converts a long integer to a string representation
+ * @num: the number to convert
+ * @base: the numerical base for conversion
+ * @flags: flags to determine the conversion process, like sign
+ * handling and letter case
  *
- * Return: string
+ * Return: a given number to its string equivalent in the specified base,
+ * with optional sign and letter case formatting.
  */
 char *convert_number(long int num, int base, int flags)
 {
@@ -122,10 +128,13 @@ char *convert_number(long int num, int base, int flags)
 }
 
 /**
- * remove_comments - function replaces first instance of '#' with '\0'
- * @buf: address of the string to modify
+ * remove_comments - nullifies comments within a command line
+ * @buf: pointer to the command line string
  *
- * Return: Always 0;
+ * Scans the command line for a '#' character that signifies the start of
+ * a comment.
+ * If found, the function replaces it with a null
+ * character to ignore the comment.
  */
 void remove_comments(char *buf)
 {
