@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * exit_shell - exits the shell with a specified status code
+ * _myexit - exits the shell with a specified status code
  * @info: shell state, potentially including an exit status argument
  *
  * Processes the 'exit' command, extracting an optional exit status.
@@ -32,7 +32,7 @@ int _myexit(info_t *info)
 }
 
 /**
- * change_directory - changes the shell's current directory
+ * _mycd - changes the shell's current directory
  * @info: shell state, including arguments provided to the 'cd' command
  *
  * Attempts to change the current directory based on the arguments provided.
@@ -97,8 +97,8 @@ int _myhelp(info_t *info)
 	char **arg_array;
 
 	arg_array = info->argv;
-	_puts("Help functionality is underway. Please check back later. \n");
+	_puts("Help Functionality Is Underway. Please Check Back Later. \n");
 	if (0)
-		_puts(*arg_array); /* temp att_unused workaround */
+		_puts(*arg_array);
 	return (0);
 }
