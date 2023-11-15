@@ -62,7 +62,7 @@ int _myalias(info_t *info)
 
 
 /**
- * print_alias - prints a formatted representation of an alias
+ * print_list - prints a formatted representation of an alias
  * @node: the list node containing the alias string
  *
  * Formats and prints an alias in the form 'name=value'.
@@ -70,7 +70,7 @@ int _myalias(info_t *info)
  * Otherwise,
  * Return: 0 after printing the alias.
  */
-int print_alias(list_t *node)
+int print_list(list_t *node)
 {
 	char *p = NULL, *a = NULL;
 
