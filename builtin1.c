@@ -1,20 +1,6 @@
 #include "shell.h"
 
 /**
- * _myhistory - outputs the history list with line numbers
- * @info: structure containing shell state, including the history list
- *
- * Iterates through the history list and prints each command
- * with its corresponding line number.
- * Return: 0 after printing the entire history list.
- */
-int _myhistory(info_t *info)
-{
-	print_list(info->history);
-	return (0);
-}
-
-/**
  * set_alias - creates a new alias or updates an existing one
  * @info: structure containing shell state, including the alias list
  * @str: string that represents the alias and its value
@@ -35,32 +21,6 @@ int set_alias(info_t *info, char *str)
 
 	set_alias(info, str);
 	return (add_node_end(&(info->alias), str, 0) == NULL);
-}
-
-/**
- * print_alias - prints a formatted representation of an alias
- * @node: the list node containing the alias string
- *
- * Formats and prints an alias in the form 'name=value'.
- * If the node is NULL, returns 1.
- * Otherwise,
- * Return: 0 after printing the alias.
- */
-int print_alias(list_t *node)
-{
-	char *p = NULL, *a = NULL;
-
-	if (node)
-	{
-		p = _strchr(node->str, '=');
-		for (a = node->str; a <= p; a++)
-			_putchar(*a);
-		_putchar('\'');
-		_puts(p + 1);
-		_puts("'\n");
-		return (0);
-	}
-	return (1);
 }
 
 /**
@@ -97,6 +57,47 @@ int _myalias(info_t *info)
 			print_alias(node_starts_with(info->alias, info->argv[i], '='));
 	}
 
+	return (0);
+}
+
+
+/**
+ * print_alias - prints a formatted representation of an alias
+ * @node: the list node containing the alias string
+ *
+ * Formats and prints an alias in the form 'name=value'.
+ * If the node is NULL, returns 1.
+ * Otherwise,
+ * Return: 0 after printing the alias.
+ */
+int print_alias(list_t *node)
+{
+	char *p = NULL, *a = NULL;
+
+	if (node)
+	{
+		p = _strchr(node->str, '=');
+		for (a = node->str; a <= p; a++)
+			_putchar(*a);
+		_putchar('\'');
+		_puts(p + 1);
+		_puts("'\n");
+		return (0);
+	}
+	return (1);
+}
+
+/**
+ * _myhistory - outputs the history list with line numbers
+ * @info: structure containing shell state, including the history list
+ *
+ * Iterates through the history list and prints each command
+ * with its corresponding line number.
+ * Return: 0 after printing the entire history list.
+ */
+int _myhistory(info_t *info)
+{
+	print_list(info->history);
 	return (0);
 }
 
