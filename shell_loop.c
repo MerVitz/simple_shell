@@ -1,11 +1,54 @@
 #include "shell.h"
 
 /**
- * hsh - main shell loop
- * @info: the parameter & return info struct
- * @av: the argument vector from main()
+ * fork_cmd - initiates a subprocess to execute a command
+ * @info: holds all the shell state and command information
  *
- * Return: 0 on success, 1 on error, or error code
+ * This function creates a new process where the command provided in
+ * info->path is executed. It waits for the command to finish and
+ * captures its exit status.
+ */
+void fork_cmd(info_t *info)
+{
+	pid_t child_pid;
+
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		/* TODO: PUT ERROR FUNCTION */
+		perror("Error:");
+		return;
+	}
+	if (child_pid == 0)
+	{
+		if (execve(info->path, info->argv, get_environ(info)) == -1)
+		{
+			free_info(info, 1);
+			if (errno == EACCES)
+				exit(126);
+			exit(1);
+		}
+		/* TODO: PUT ERROR FUNCTION */
+	}
+	else
+	{
+		wait(&(info->status));
+		if (WIFEXITED(info->status))
+		{
+			info->status = WEXITSTATUS(info->status);
+			if (info->status == 126)
+				print_error(info, "Permission denied\n");
+		}
+	}
+}
+
+/**
+ * hsh - orchestrates the main operation cycle of the shell
+ * @info: holds all shell operational data
+ * @av: argument vector passed from the main function
+ *
+ * Return: Manages the input, processing, and execution of commands
+ * in a loop, * handling both interactive and non-interactive shell modes.
  */
 int hsh(info_t *info, char **av)
 {
@@ -44,13 +87,12 @@ int hsh(info_t *info, char **av)
 }
 
 /**
- * find_builtin - finds a builtin command
- * @info: the parameter & return info struct
+ * find_builtin - locates and executes built-in shell commands
+ * @info: holds all the shell state and command information
  *
- * Return: -1 if builtin not found,
- *			0 if builtin executed successfully,
- *			1 if builtin found but not successful,
- *			-2 if builtin signals exit()
+ * Return: Searches for built-in commands like 'exit', 'env', etc.,
+ * and executes them if found. Otherwise, it delegates the command
+ * search to the PATH.
  */
 int find_builtin(info_t *info)
 {
@@ -78,10 +120,11 @@ int find_builtin(info_t *info)
 }
 
 /**
- * find_cmd - finds a command in PATH
- * @info: the parameter & return info struct
+ * find_cmd - searches for a command in the system's PATH
+ * @info: contains all the shell state and command information
  *
- * Return: void
+ * If a command is found in the PATH, it is executed by forking a subprocess.
+ * If the command is not found, an error message is displayed.
  */
 void find_cmd(info_t *info)
 {
@@ -119,42 +162,3 @@ void find_cmd(info_t *info)
 	}
 }
 
-/**
- * fork_cmd - forks a an exec thread to run cmd
- * @info: the parameter & return info struct
- *
- * Return: void
- */
-void fork_cmd(info_t *info)
-{
-	pid_t child_pid;
-
-	child_pid = fork();
-	if (child_pid == -1)
-	{
-		/* TODO: PUT ERROR FUNCTION */
-		perror("Error:");
-		return;
-	}
-	if (child_pid == 0)
-	{
-		if (execve(info->path, info->argv, get_environ(info)) == -1)
-		{
-			free_info(info, 1);
-			if (errno == EACCES)
-				exit(126);
-			exit(1);
-		}
-		/* TODO: PUT ERROR FUNCTION */
-	}
-	else
-	{
-		wait(&(info->status));
-		if (WIFEXITED(info->status))
-		{
-			info->status = WEXITSTATUS(info->status);
-			if (info->status == 126)
-				print_error(info, "Permission denied\n");
-		}
-	}
-}
