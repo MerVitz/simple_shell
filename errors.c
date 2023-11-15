@@ -1,10 +1,11 @@
 #include "shell.h"
 
 /**
- *_eputs - prints an input string
- * @str: the string to be printed
+ * _eputs - outputs an error message to stderr
+ * @str: the error message to print
  *
- * Return: Nothing
+ * Iterates through the error message string, passing each
+ * character to the _eputchar function to write to stderr.
  */
 void _eputs(char *str)
 {
@@ -20,11 +21,12 @@ void _eputs(char *str)
 }
 
 /**
- * _eputchar - writes the character c to stderr
- * @c: The character to print
+ * _eputchar- writes a single character to stderr
+ * @c: the character to output
  *
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
+ * Buffers the character and writes it to standard error.
+ * The buffer is flushed when full or when commanded.
+ * Return: 1 on success, or -1 on error with errno set appropriately.
  */
 int _eputchar(char c)
 {
@@ -42,12 +44,14 @@ int _eputchar(char c)
 }
 
 /**
- * _putfd - writes the character c to given fd
- * @c: The character to print
- * @fd: The filedescriptor to write to
+ * _putfd - writes a single character to a specified file
+ * descriptor
+ * @c: the character to output
+ * @fd: the file descriptor to which the character will be written
  *
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
+ * Buffers the character and writes it to the specified file descriptor.
+ * The buffer is flushed when full or when commanded.
+ * Return: 1 on success, or -1 if an error occurs and sets errno.
  */
 int _putfd(char c, int fd)
 {
@@ -65,11 +69,13 @@ int _putfd(char c, int fd)
 }
 
 /**
- *_putsfd - prints an input string
- * @str: the string to be printed
- * @fd: the filedescriptor to write to
+ * _putsfd - outputs a string to a given file descriptor
+ * @str: the string to print
+ * @fd: the file descriptor to write to
  *
- * Return: the number of chars put
+ * This function sends each character of a string to the
+ * print_string_to_fd function to write to the specified file descriptor.
+ * Return: the total number of characters written.
  */
 int _putsfd(char *str, int fd)
 {
