@@ -1,37 +1,6 @@
 #include "shell.h"
 
 /**
- * _myexit - exits the shell with a specified status code
- * @info: shell state, potentially including an exit status argument
- *
- * Processes the 'exit' command, extracting an optional exit status.
- * If no status is provided, exits with the current status of the shell.
- * Return: If an invalid status is provided,
- * prints an error and returns.
- */
-int _myexit(info_t *info)
-{
-	int exitcheck;
-
-	if (info->argv[1])  /* If there is an exit arguement */
-	{
-		exitcheck = _erratoi(info->argv[1]);
-		if (exitcheck == -1)
-		{
-			info->status = 2;
-			print_error(info, "Illegal Number: ");
-			_eputs(info->argv[1]);
-			_eputchar('\n');
-			return (1);
-		}
-		info->err_num = _erratoi(info->argv[1]);
-		return (-2);
-	}
-	info->err_num = -1;
-	return (-2);
-}
-
-/**
  * _mycd - changes the shell's current directory
  * @info: shell state, including arguments provided to the 'cd' command
  *
@@ -82,6 +51,37 @@ int _mycd(info_t *info)
 		_setenv(info, "PWD", getcwd(buffer, 1024));
 	}
 	return (0);
+}
+
+/**
+ * _myexit - exits the shell with a specified status code
+ * @info: shell state, potentially including an exit status argument
+ *
+ * Processes the 'exit' command, extracting an optional exit status.
+ * If no status is provided, exits with the current status of the shell.
+ * Return: If an invalid status is provided,
+ * prints an error and returns.
+ */
+int _myexit(info_t *info)
+{
+	int exitcheck;
+
+	if (info->argv[1])  /* If there is an exit arguement */
+	{
+		exitcheck = _erratoi(info->argv[1]);
+		if (exitcheck == -1)
+		{
+			info->status = 2;
+			print_error(info, "Illegal Number: ");
+			_eputs(info->argv[1]);
+			_eputchar('\n');
+			return (1);
+		}
+		info->err_num = _erratoi(info->argv[1]);
+		return (-2);
+	}
+	info->err_num = -1;
+	return (-2);
 }
 
 /**
