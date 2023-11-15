@@ -1,13 +1,13 @@
 #include "shell.h"
 
 /**
- * check_for_command - checks if the provided path points to an executable
- * @info: pointer to the structure holding the shell information
- * @path: the potential path of the executable file
+ * is_cmd - determines if a file is an executable command
+ * @info: the info struct
+ * @path: path to the file
  *
- * Return: 1 if the path is an executable, 0 if not
+ * Return: 1 if true, 0 otherwise
  */
-int check_for_command(info_t *info, char *path)
+int is_cmd(info_t *info, char *path)
 {
 	struct stat st;
 
@@ -23,14 +23,14 @@ int check_for_command(info_t *info, char *path)
 }
 
 /**
- * copy_characters - creates a copy of a subset of characters from a string
- * @pathstr: the string containing the PATH environment variable
- * @start: index to begin copying characters
- * @stop: index to end copying characters
+ * dup_chars - duplicates characters
+ * @pathstr: the PATH string
+ * @start: starting index
+ * @stop: stopping index
  *
- * Return: pointer to the newly created string segment
+ * Return: pointer to new buffer
  */
-char *copy_characters(char *pathstr, int start, int stop)
+char *dup_chars(char *pathstr, int start, int stop)
 {
 	static char buf[1024];
 	int i = 0, k = 0;
@@ -43,14 +43,14 @@ char *copy_characters(char *pathstr, int start, int stop)
 }
 
 /**
- * seek_cmd_path - searches for a command's path within the PATH variable
- * @info: the info struct holding shell context
- * @pathstr: string containing the PATH environment variable
- * @cmd: the command to locate
+ * find_path - finds this cmd in the PATH string
+ * @info: the info struct
+ * @pathstr: the PATH string
+ * @cmd: the cmd to find
  *
- * Return: the full path to the command if it exists, or NULL if not found
+ * Return: full path of cmd if found or NULL
  */
-char *seek_cmd_path(info_t *info, char *pathstr, char *cmd)
+char *find_path(info_t *info, char *pathstr, char *cmd)
 {
 	int i = 0, curr_pos = 0;
 	char *path;
@@ -59,7 +59,7 @@ char *seek_cmd_path(info_t *info, char *pathstr, char *cmd)
 		return (NULL);
 	if ((_strlen(cmd) > 2) && starts_with(cmd, "./"))
 	{
-		if (find_cmd(info, cmd))
+		if (is_cmd(info, cmd))
 			return (cmd);
 	}
 	while (1)
@@ -74,7 +74,7 @@ char *seek_cmd_path(info_t *info, char *pathstr, char *cmd)
 				_strcat(path, "/");
 				_strcat(path, cmd);
 			}
-			if (find_cmd(info, path))
+			if (is_cmd(info, path))
 				return (path);
 			if (!pathstr[i])
 				break;
