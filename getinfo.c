@@ -1,8 +1,13 @@
 #include "shell.h"
 
 /**
- * clear_info - initializes info_t struct
- * @info: struct address
+ * clear_info - resets the fields of info_t struct to default states
+ * @info: reference to the shell state structure
+ *
+ * Resets the various fields within the info_t structure
+ * in preparation for processing a new command.
+ * Return: This function is typically called at the start of a
+ * new command loop.
  */
 void clear_info(info_t *info)
 {
@@ -13,9 +18,15 @@ void clear_info(info_t *info)
 }
 
 /**
- * set_info - initializes info_t struct
- * @info: struct address
- * @av: argument vector
+ * set_info - sets up the info_t struct with
+ * command line arguments
+ * @info: pointer to the shell state structure
+ * @av: argument vector from main
+ *
+ * This function initializes the info_t structure with the
+ * filename and processes any arguments
+ * Return: present in the info->arg field by tokenizing them into
+ * info->argv and performing variable and alias replacement.
  */
 void set_info(info_t *info, char **av)
 {
@@ -45,9 +56,14 @@ void set_info(info_t *info, char **av)
 }
 
 /**
- * free_info - frees info_t struct fields
- * @info: struct address
- * @all: true if freeing all fields
+ * free_info - deallocates memory of
+ * info_t struct fields
+ * @info: reference to the shell state structure
+ * @all: flag to indicate if all or partial resources should be freed
+ *
+ * This function is responsible for freeing the memory allocated
+ * to fields within the info_t structure.
+ * Return: all or part of the resources based on the 'all' flag.
  */
 void free_info(info_t *info, int all)
 {
