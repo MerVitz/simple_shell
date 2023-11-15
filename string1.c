@@ -1,11 +1,14 @@
 #include "shell.h"
 
 /**
- * _strcpy - copies a string
- * @dest: the destination
- * @src: the source
+ * replicate_string - duplicates the content of one string to another location
+ * @dest: target location where the string will be copied
+ * @src: source string to be copied
  *
- * Return: pointer to destination
+ * This function replicates the content of the source string
+ * into the destination buffer,
+ * ensuring the destination has a copy of the string.
+ * Return: the destination pointer.
  */
 char *_strcpy(char *dest, char *src)
 {
@@ -23,10 +26,32 @@ char *_strcpy(char *dest, char *src)
 }
 
 /**
- * _strdup - duplicates a string
- * @str: the string to duplicate
+ * _puts - prints a given string to standard output
+ * @str: the string to be echoed
  *
- * Return: pointer to the duplicated string
+ * By invoking the character-wise output function,
+ * Return: writes an entire string to stdout.
+ */
+void _puts(char *str)
+{
+	int i = 0;
+
+	if (!str)
+		return;
+	while (str[i] != '\0')
+	{
+		_putchar(str[i]);
+		i++;
+	}
+}
+
+/**
+ * _strdup - generates a new memory allocation
+ * containing the same string
+ * @str: the original string to duplicate
+ *
+ * This function allocates new memory and copies the input string into it,
+ * Return: a pointer to the newly allocated duplicate.
  */
 char *_strdup(const char *str)
 {
@@ -46,30 +71,14 @@ char *_strdup(const char *str)
 }
 
 /**
- *_puts - prints an input string
- *@str: the string to be printed
+ * _putchar - writes characters to stdout with
+ * buffering capabilities
+ * @c: character to be printed, or control character to manage the buffer
  *
- * Return: Nothing
- */
-void _puts(char *str)
-{
-	int i = 0;
-
-	if (!str)
-		return;
-	while (str[i] != '\0')
-	{
-		_putchar(str[i]);
-		i++;
-	}
-}
-
-/**
- * _putchar - writes the character c to stdout
- * @c: The character to print
- *
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
+ * This function manages a static buffer to collect characters
+ * and writes them to stdout
+ * in a batch. It's designed to be efficient by reducing
+ * Return: number of write calls.
  */
 int _putchar(char c)
 {
