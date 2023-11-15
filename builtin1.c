@@ -31,7 +31,7 @@ int set_alias(info_t *info, char *str)
 	if (!p)
 		return (1);
 	if (!*++p)
-		return (unset_alias(info, str));
+		return (set_alias(info, str));
 
 	unset_alias(info, str);
 	return (add_node_end(&(info->alias), str, 0) == NULL);
@@ -71,7 +71,7 @@ int print_alias(list_t *node)
  * Processes the alias-related commands, creating, updating,
  * or printing aliases based on the input arguments.
  * Return: 0 after processing the commands.
- *//
+ */
 int _myalias(info_t *info)
 {
 	int i = 0;
