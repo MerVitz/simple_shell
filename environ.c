@@ -1,98 +1,92 @@
 #include "shell.h"
 
 /**
- * construct_env_list - creates a linked list from the environment variables
- * @info: shell state information, including the head of the env list
- *
- * Loops over the system environment variables
- * and appends each one to a new linked list.
- * The head of the list is stored in the info structure.
- * Return: 0.
+ * _myenv - prints the current environment
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ * Return: Always 0
  */
-int construct_env_list(info_t *info)
+int _myenv(info_t *info)
 {
-	list_t *node = NULL;
-
-	for (size_t i = 0; environ[i]; i++)
-
-	{
-		add_node_end(&node, environ[i], 0);
-	}
-	info->env = node;
+	print_list_str(info->env);
 	return (0);
 }
 
 /**
- * retrieve_env_value - obtains the value of an environment variable
- * @info: shell state information, used for accessing the env list
- * @name: the name of the environment variable to find
+ * _getenv - gets the value of an environ variable
+ * @info: Structure containing potential arguments. Used to maintain
+ * @name: env var name
  *
- * Traverses the env linked list to find the variable
- * 'name' and returns its value.
- * Return: NULL if the variable is not found.
+ * Return: the value
  */
-char *retrieve_env_value(info_t *info, const char *name)
+char *_getenv(info_t *info, const char *name)
 {
-	for (list_t *node = info->env; node; node = node->next)
+	list_t *node = info->env;
+	char *p;
+
+	while (node)
 	{
-		char *match = starts_with(node->str, name);
-			return (match);
+		p = starts_with(node->str, name);
+		if (p && *p)
+			return (p);
+		node = node->next;
 	}
 	return (NULL);
 }
 
 /**
- * environment_variable_set - sets or updates an environment variable
- * @info: shell state information including the env list and argument count
- *
- * Checks for the correct number of arguments and then sets or
- * updates the specified environment variable.
- * Return:  on incorrect arguments or if the _setenv
- * function fails, otherwise 0.
+ * _mysetenv - Initialize a new environment variable,
+ *             or modify an existing one
+ * @info: Structure containing potential arguments. Used to maintain
+ *        constant function prototype.
+ *  Return: Always 0
  */
-int environment_variable_set(info_t *info)
+int _mysetenv(info_t *info)
 {
 	if (info->argc != 3)
 	{
-		puts("Incorrect number of arguments\n");
+		_eputs("Incorrect number of arguements\n");
 		return (1);
 	}
-	return (setenv(info, info->argv[1], info->argv[2]) ? 0 : 1);
+	if (_setenv(info, info->argv[1], info->argv[2]))
+		return (0);
+	return (1);
 }
 
 /**
- * environment_variable_unset - removes environment variables
- * @info: shell state information including the env list and argument count
- *
- * Removes the specified environment variables from the env list.
- * If no variables are specified,
- * an error message is printed.
- * Return: 0 after attempting to unset the variables.
+ * _myunsetenv - Remove an environment variable
+ * @info: Structure containing potential arguments. Used to maintain
+ *        constant function prototype.
+ *  Return: Always 0
  */
-int environment_variable_unset(info_t *info)
+int _myunsetenv(info_t *info)
 {
-	if (info->argc < 2)
+	int i;
+
+	if (info->argc == 1)
 	{
-		puts("Too few arguments.\n");
+		_eputs("Too few arguements.\n");
 		return (1);
 	}
-	for (int i = 1; i < info->argc; i++)
-	{
-		unsetenv(info, info->argv[i]);
-	}
+	for (i = 1; i <= info->argc; i++)
+		_unsetenv(info, info->argv[i]);
+
 	return (0);
 }
 
 /**
- * display_environment - prints the current environment to stdout
- * @info: shell state information including the env list
- *
- * Outputs the entire environment list to stdout, using the
- * print_list_str function.
- * Return: 0 always.
+ * populate_env_list - populates env linked list
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ * Return: Always 0
  */
-int display_environment(info_t *info)
+int populate_env_list(info_t *info)
 {
-	print_list_str(info->env);
+	list_t *node = NULL;
+	size_t i;
+
+	for (i = 0; environ[i]; i++)
+		add_node_end(&node, environ[i], 0);
+	info->env = node;
 	return (0);
 }
