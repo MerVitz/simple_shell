@@ -1,11 +1,16 @@
 #include "shell.h"
 
 /**
- **_strncpy - copies a string
- *@dest: the destination string to be copied to
- *@src: the source string
- *@n: the amount of characters to be copied
- *Return: the concatenated string
+ * _strncpy - replicates a subset of a source
+ * string to a destination
+ * @dest: the target buffer for copying
+ * @src: the original string from which to copy characters
+ * @n: the count of characters to replicate
+ *
+ * This function will copy 'n' characters from 'src' to 'dest'.
+ * If 'src' has fewer than 'n'
+ * characters, the remainder of 'dest' will be padded with null bytes.
+ * Return: a pointer to the destination string.
  */
 char *_strncpy(char *dest, char *src, int n)
 {
@@ -31,11 +36,18 @@ char *_strncpy(char *dest, char *src, int n)
 }
 
 /**
- **_strncat - concatenates two strings
- *@dest: the first string
- *@src: the second string
- *@n: the amount of bytes to be maximally used
- *Return: the concatenated string
+ * _strncat - appends characters from one string
+ * to another up to a limit
+ * @dest: the string to be appended to
+ * @src: the string to append from
+ * @n: the maximum number of characters to transfer
+ *
+ * Concatenates up to 'n' characters from 'src' onto the end
+ * of 'dest'. If 'src' is shorter
+ * than 'n', the concatenation stops at the null-terminator.
+ * The destination string is always
+ * null-terminated.
+ * Return: the concatenated string.
  */
 char *_strncat(char *dest, char *src, int n)
 {
@@ -58,10 +70,15 @@ char *_strncat(char *dest, char *src, int n)
 }
 
 /**
- **_strchr - locates a character in a string
- *@s: the string to be parsed
- *@c: the character to look for
- *Return: (s) a pointer to the memory area s
+ * _strchr - locates the first instance of a character in a string
+ * @s: the string within which to search for the character
+ * @c: the target character to find
+ *
+ * Searches through a string to find the first appearance of
+ * a specified character, 'c'.
+ * If the character is found, a pointer to its location in the
+ * string is returned. If the character
+ * Return: NULL.
  */
 char *_strchr(char *s, char c)
 {
