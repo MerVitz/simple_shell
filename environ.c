@@ -1,10 +1,12 @@
 #include "shell.h"
 
 /**
- * _myenv - prints the current environment
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- * Return: Always 0
+ * _myenv - prints the current environment to stdout
+ * @info: shell state information including the env list
+ *
+ * Outputs the entire environment list to stdout, using the
+ * print_list_str function.
+ * Return: 0 always.
  */
 int _myenv(info_t *info)
 {
@@ -13,11 +15,13 @@ int _myenv(info_t *info)
 }
 
 /**
- * _getenv - gets the value of an environ variable
- * @info: Structure containing potential arguments. Used to maintain
- * @name: env var name
+ * _getenv - obtains the value of an environment variable
+ * @info: shell state information, used for accessing the env list
+ * @name: the name of the environment variable to find
  *
- * Return: the value
+ * Traverses the env linked list to find the variable
+ * 'name' and returns its value.
+ * Return: NULL if the variable is not found.
  */
 char *_getenv(info_t *info, const char *name)
 {
@@ -35,11 +39,13 @@ char *_getenv(info_t *info, const char *name)
 }
 
 /**
- * _mysetenv - Initialize a new environment variable,
- *             or modify an existing one
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- *  Return: Always 0
+ * _mysetenv - removes environment variables
+ * @info: shell state information including the env list and argument count
+ *
+ * Removes the specified environment variables from the env list.
+ * If no variables are specified,
+ * an error message is printed.
+ * Return: 1 after attempting to unset the variables.
  */
 int _mysetenv(info_t *info)
 {
@@ -54,10 +60,13 @@ int _mysetenv(info_t *info)
 }
 
 /**
- * _myunsetenv - Remove an environment variable
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- *  Return: Always 0
+ * _myunsetenv - sets or updates an environment variable
+ * @info: shell state information including the env list and argument count
+ *
+ * Checks for the correct number of arguments and then sets or
+ * updates the specified environment variable.
+ * Return:  on incorrect arguments or if the _setenv
+ * function fails, otherwise 0.
  */
 int _myunsetenv(info_t *info)
 {
@@ -75,10 +84,13 @@ int _myunsetenv(info_t *info)
 }
 
 /**
- * populate_env_list - populates env linked list
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- * Return: Always 0
+ * populate_env_list - creates a linked list from the environment variables
+ * @info: shell state information, including the head of the env list
+ *
+ * Loops over the system environment variables
+ * and appends each one to a new linked list.
+ * The head of the list is stored in the info structure.
+ * Return: 0.
  */
 int populate_env_list(info_t *info)
 {
