@@ -1,12 +1,30 @@
 #include "shell.h"
 
 /**
- * is_chain - test if current char in buffer is a chain delimeter
- * @info: the parameter struct
- * @buf: the char buffer
- * @p: address of current position in buf
+ * replace_string - substitutes one string for another
+ * @old: pointer to the string to be replaced
+ * @new: string to replace with
+ * This function replaces the contents of the pointer
+ * to the old string with a new string
+ * and deallocates the memory for the old string.
+ * Return: 1 to indicate the operation was successful.
+ */
+int replace_string(char **old, char *new)
+{
+	free(*old);
+	*old = new;
+	return (1);
+}
+
+/**
+ * is_chain - identifies command separators such as &&, ||, ;
+ * @info: context containing shell information
+ * @buf: command buffer to be parsed
+ * @p: pointer to current position in the buffer
  *
- * Return: 1 if chain delimeter, 0 otherwise
+ * Checks for the presence of a chain delimiter in the command
+ * buffer and updates the parsing state accordingly.
+ * Return: 1 if a delimiter is found, otherwise 0.
  */
 int is_chain(info_t *info, char *buf, size_t *p)
 {
@@ -36,14 +54,16 @@ int is_chain(info_t *info, char *buf, size_t *p)
 }
 
 /**
- * check_chain - checks we should continue chaining based on last status
- * @info: the parameter struct
- * @buf: the char buffer
- * @p: address of current position in buf
- * @i: starting position in buf
- * @len: length of buf
+ * check_chain - assesses the need to proceed with command chaining
+ * @info: context containing shell information and status
+ * @buf: buffer containing the command chain
+ * @p: pointer to the current buffer index
+ * @i: index in the buffer to check from
+ * @len: total length of the buffer
  *
- * Return: Void
+ * This function determines whether to break out of a command chain
+ * based on the result of the last command.
+ * Return: It modifies the buffer to terminate the chain if necessary.
  */
 void check_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
 {
@@ -70,10 +90,13 @@ void check_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
 }
 
 /**
- * replace_alias - replaces an aliases in the tokenized string
- * @info: the parameter struct
+ * replace_alias - seeks and replaces aliases in the tokenized command
+ * @info: context containing shell information, including aliases
  *
- * Return: 1 if replaced, 0 otherwise
+ * Iterates over the aliases list and replaces any matching first
+ * argument of the command
+ * with its corresponding alias value.
+ * Return: 1 if an alias was replaced, 0 otherwise.
  */
 int replace_alias(info_t *info)
 {
@@ -99,10 +122,13 @@ int replace_alias(info_t *info)
 }
 
 /**
- * replace_vars - replaces vars in the tokenized string
- * @info: the parameter struct
+ * replace_vars - substitutes variables within the command arguments
+ * @info: context containing shell information, including variables
  *
- * Return: 1 if replaced, 0 otherwise
+ * Scans through the argument list, replacing any recognized
+ * variables with their values.
+ * Unrecognized variables are replaced with an empty string.
+ * Return:0
  */
 int replace_vars(info_t *info)
 {
@@ -139,16 +165,4 @@ int replace_vars(info_t *info)
 	return (0);
 }
 
-/**
- * replace_string - replaces string
- * @old: address of old string
- * @new: new string
- *
- * Return: 1 if replaced, 0 otherwise
- */
-int replace_string(char **old, char *new)
-{
-	free(*old);
-	*old = new;
-	return (1);
-}
+
