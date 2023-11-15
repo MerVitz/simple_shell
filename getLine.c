@@ -1,12 +1,15 @@
 #include "shell.h"
 
 /**
- * input_buf - buffers chained commands
- * @info: parameter struct
- * @buf: address of buffer
- * @len: address of len var
+ * input_buf - processes chained commands from input buffer
+ * @info: pointer to the shell info structure
+ * @buf: address of input buffer containing command chain
+ * @len: address of length variable tracking the buffer size
  *
- * Return: bytes read
+ * Manages the parsing and execution of chained commands read
+ * into the input buffer.
+ * Handles input retrieval, command separation, and history logging.
+ * Return: the number of bytes processed.
  */
 ssize_t input_buf(info_t *info, char **buf, size_t *len)
 {
@@ -45,10 +48,13 @@ ssize_t input_buf(info_t *info, char **buf, size_t *len)
 }
 
 /**
- * get_input - gets a line minus the newline
- * @info: parameter struct
+ * get_input - retrieves and processes a single command or a chain of commands
+ * @info: pointer to the shell info structure
  *
- * Return: bytes read
+ * Coordinates the retrieval of input lines and manages command
+ * chaining by checking for semicolons.
+ * Handles command history and buffer management.
+ * Return: the length of the command to be executed.
  */
 ssize_t get_input(info_t *info)
 {
@@ -90,12 +96,14 @@ ssize_t get_input(info_t *info)
 }
 
 /**
- * read_buf - reads a buffer
- * @info: parameter struct
- * @buf: buffer
- * @i: size
+ * read_buf - reads input from a file descriptor into a buffer
+ * @info: parameter struct containing the file descriptor
+ * @buf: buffer to read into
+ * @i: current position in buffer
  *
- * Return: r
+ * This function reads input into a buffer from a file descriptor
+ * specified in info.
+ * Return: the number of bytes read or -1 on error.
  */
 ssize_t read_buf(info_t *info, char *buf, size_t *i)
 {
@@ -110,12 +118,16 @@ ssize_t read_buf(info_t *info, char *buf, size_t *i)
 }
 
 /**
- * _getline - gets the next line of input from STDIN
- * @info: parameter struct
- * @ptr: address of pointer to buffer, preallocated or NULL
- * @length: size of preallocated ptr buffer if not NULL
+ * _getline - retrieves a line of input from a file descriptor
+ * @info: pointer to the shell info structure containing file
+ * descriptor for input
+ * @ptr: address of pointer to buffer, to store the input line
+ * @length: size of preallocated buffer if not NULL
  *
- * Return: s
+ * Reads input until a newline or EOF is encountered. It manages
+ * a static buffer to
+ * keep track of the input state across multiple calls.
+ * Return: the length of the line read.
  */
 int _getline(info_t *info, char **ptr, size_t *length)
 {
@@ -157,10 +169,11 @@ int _getline(info_t *info, char **ptr, size_t *length)
 }
 
 /**
- * sigintHandler - blocks ctrl-C
- * @sig_num: the signal number
+ * sigintHandler - intercepts the SIGINT signal to prevent shell exit
+ * @sig_num: the signal number received, expected to be SIGINT
  *
- * Return: void
+ * Instead of terminating the shell, it flushes the output buffer and
+ * prompts a new command line. This function is a custom signal handler.
  */
 void sigintHandler(__attribute__((unused))int sig_num)
 {
