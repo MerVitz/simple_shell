@@ -1,51 +1,87 @@
 #include "shell.h"
 
 /**
- * fork_cmd - initiates a subprocess to execute a command
- * @info: holds all the shell state and command information
+ * hsh - main shell loop
+ * @info: the parameter & return info struct
+ * @av: the argument vector from main()
  *
- * This function creates a new process where the command provided in
- * info->path is executed. It waits for the command to finish and
- * captures its exit status.
+ * Return: 0 on success, 1 on error, or error code
  */
-void fork_cmd(info_t *info)
+int hsh(info_t *info, char **av)
 {
-	pid_t child_pid;
+	ssize_t r = 0;
+	int builtin_ret = 0;
 
-	child_pid = fork();
-	if (child_pid == -1)
+	while (r != -1 && builtin_ret != -2)
 	{
-		perror("Error:");
-		return;
-	}
-	if (child_pid == 0)
-	{
-		if (execve(info->path, info->argv, get_environ(info)) == -1)
+		clear_info(info);
+		if (interactive(info))
+			_puts("$ ");
+		_eputchar(BUF_FLUSH);
+		r = get_input(info);
+		if (r != -1)
 		{
-			reset_info(info, 1);
-			if (errno == EACCES)
-				exit(126);
-			exit(1);
+			set_info(info, av);
+			builtin_ret = find_builtin(info);
+			if (builtin_ret == -1)
+				find_cmd(info);
 		}
+		else if (interactive(info))
+			_putchar('\n');
+		free_info(info, 0);
 	}
-	else
+	write_history(info);
+	free_info(info, 1);
+	if (!interactive(info) && info->status)
+		exit(info->status);
+	if (builtin_ret == -2)
 	{
-		wait(&(info->status));
-		if (WIFEXITED(info->status))
-		{
-			info->status = WEXITSTATUS(info->status);
-			if (info->status == 126)
-				print_error(info, "Permission denied\n");
-		}
+		if (info->err_num == -1)
+			exit(info->status);
+		exit(info->err_num);
 	}
+	return (builtin_ret);
 }
 
 /**
- * find_cmd - searches for a command in the system's PATH
- * @info: contains all the shell state and command information
+ * find_builtin - finds a builtin command
+ * @info: the parameter & return info struct
  *
- * If a command is found in the PATH, it is executed by forking a subprocess.
- * If the command is not found, an error message is displayed.
+ * Return: -1 if builtin not found,
+ *			0 if builtin executed successfully,
+ *			1 if builtin found but not successful,
+ *			-2 if builtin signals exit()
+ */
+int find_builtin(info_t *info)
+{
+	int i, built_in_ret = -1;
+	builtin_table builtintbl[] = {
+		{"exit", _myexit},
+		{"env", _myenv},
+		{"help", _myhelp},
+		{"history", _myhistory},
+		{"setenv", _mysetenv},
+		{"unsetenv", _myunsetenv},
+		{"cd", _mycd},
+		{"alias", _myalias},
+		{NULL, NULL}
+	};
+
+	for (i = 0; builtintbl[i].type; i++)
+		if (_strcmp(info->argv[0], builtintbl[i].type) == 0)
+		{
+			info->line_count++;
+			built_in_ret = builtintbl[i].func(info);
+			break;
+		}
+	return (built_in_ret);
+}
+
+/**
+ * find_cmd - finds a command in PATH
+ * @info: the parameter & return info struct
+ *
+ * Return: void
  */
 void find_cmd(info_t *info)
 {
@@ -64,7 +100,7 @@ void find_cmd(info_t *info)
 	if (!k)
 		return;
 
-	path = find_path(info, getenv(info, "PATH="), info->argv[0]);
+	path = find_path(info, _getenv(info, "PATH="), info->argv[0]);
 	if (path)
 	{
 		info->path = path;
@@ -72,8 +108,8 @@ void find_cmd(info_t *info)
 	}
 	else
 	{
-		if ((interactive(info) || getenv(info, "PATH=")
-			|| info->argv[0][0] == '/') && find_cmd(info, info->argv[0]))
+		if ((interactive(info) || _getenv(info, "PATH=")
+			|| info->argv[0][0] == '/') && is_cmd(info, info->argv[0]))
 			fork_cmd(info);
 		else if (*(info->arg) != '\n')
 		{
@@ -84,78 +120,41 @@ void find_cmd(info_t *info)
 }
 
 /**
- * seek_builtin - locates and executes built-in shell commands
- * @info: holds all the shell state and command information
+ * fork_cmd - forks a an exec thread to run cmd
+ * @info: the parameter & return info struct
  *
- * Return: Searches for built-in commands like 'exit', 'env', etc.,
- * and executes them if found. Otherwise, it delegates the command
- * search to the PATH.
+ * Return: void
  */
-int seek_builtin(info_t *info)
+void fork_cmd(info_t *info)
 {
-	int i, built_in_ret = -1;
-	builtin_table builtintbl[] = {
-		{"exit", _exit},
-		{"env", _myenv},
-		{"help", _myhelp},
-		{"history", _myhistory},
-		{"setenv", unsetenv},
-		{"unsetenv", unsetenv},
-		{"cd", _mycd},
-		{"alias", _myalias},
-		{NULL, NULL}
-	};
+	pid_t child_pid;
 
-	for (i = 0; builtintbl[i].type; i++)
-		if (_strcmp(info->argv[0], builtintbl[i].type) == 0)
-		{
-			info->line_count++;
-			built_in_ret = builtintbl[i].func(info);
-			break;
-		}
-	return (built_in_ret);
-}
-
-/**
- * shell_cycle - orchestrates the main operation cycle of the shell
- * @info: holds all shell operational data
- * @av: argument vector passed from the main function
- *
- * Return: Manages the input, processing, and execution of commands
- * in a loop, * handling both interactive and non-interactive shell modes.
- */
-int shell_cycle(info_t *info, char **av)
-{
-	ssize_t r = 0;
-	int builtin_ret = 0;
-
-	while (r != -1 && builtin_ret != -2)
+	child_pid = fork();
+	if (child_pid == -1)
 	{
-		clear_info(info);
-		if (interactive(info))
-			puts("$ ");
-		putchar(BUF_FLUSH);
-		r = get_input(info);
-		if (r != -1)
-		{
-			reset_info(info, av);
-			builtin_ret = seek_builtin(info);
-			if (builtin_ret == -1)
-				find_cmd(info);
-		}
-		else if (interactive(info))
-			putchar('\n');
-		free_info(info, 0);
+		/* TODO: PUT ERROR FUNCTION */
+		perror("Error:");
+		return;
 	}
-	store_history(info);
-	free_info(info, 1);
-	if (!interactive(info) && info->status)
-		exit(info->status);
-	if (builtin_ret == -2)
+	if (child_pid == 0)
 	{
-		if (info->err_num == -1)
-			exit(info->status);
-		exit(info->err_num);
+		if (execve(info->path, info->argv, get_environ(info)) == -1)
+		{
+			free_info(info, 1);
+			if (errno == EACCES)
+				exit(126);
+			exit(1);
+		}
+		/* TODO: PUT ERROR FUNCTION */
 	}
-	return (builtin_ret);
+	else
+	{
+		wait(&(info->status));
+		if (WIFEXITED(info->status))
+		{
+			info->status = WEXITSTATUS(info->status);
+			if (info->status == 126)
+				print_error(info, "Permission denied\n");
+		}
+	}
 }
