@@ -1,11 +1,15 @@
 #include "shell.h"
 
 /**
- * main - entry point
- * @ac: arg count
- * @av: arg vector
+ * main - initiates the simple shell program
+ * @ac: the count of command-line arguments
+ * @av: the array of command-line arguments
  *
- * Return: 0 on success, 1 on error
+ * Initializes the shell's info structure and processes command-line arguments.
+ * If a script file is provided, it attempts to open and read from it.
+ * Initializes the shell environment, loads history, and starts the shell loop.
+ * Return: Exits with appropriate status codes upon
+ * encountering file access errors.
  */
 int main(int ac, char **av)
 {
