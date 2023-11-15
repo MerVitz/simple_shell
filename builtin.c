@@ -1,11 +1,13 @@
 #include "shell.h"
 
 /**
- * _myexit - exits the shell
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- *  Return: exits with a given exit status
- *         (0) if info.argv[0] != "exit"
+ * exit_shell - exits the shell with a specified status code
+ * @info: shell state, potentially including an exit status argument
+ *
+ * Processes the 'exit' command, extracting an optional exit status.
+ * If no status is provided, exits with the current status of the shell.
+ * Return: If an invalid status is provided,
+ * prints an error and returns.
  */
 int _myexit(info_t *info)
 {
@@ -17,7 +19,7 @@ int _myexit(info_t *info)
 		if (exitcheck == -1)
 		{
 			info->status = 2;
-			print_error(info, "Illegal number: ");
+			print_error(info, "Illegal Number: ");
 			_eputs(info->argv[1]);
 			_eputchar('\n');
 			return (1);
@@ -30,10 +32,13 @@ int _myexit(info_t *info)
 }
 
 /**
- * _mycd - changes the current directory of the process
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- *  Return: Always 0
+ * change_directory - changes the shell's current directory
+ * @info: shell state, including arguments provided to the 'cd' command
+ *
+ * Attempts to change the current directory based on the arguments provided.
+ * If no argument is given, it tries to go to the home directory.
+ * Return: can handle relative paths, absolute paths,
+ * and '-' for previous directory.
  */
 int _mycd(info_t *info)
 {
@@ -80,17 +85,19 @@ int _mycd(info_t *info)
 }
 
 /**
- * _myhelp - changes the current directory of the process
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- *  Return: Always 0
+ * _myhelp - provides help information for built-in commands
+ * @info: shell state, including arguments provided to the 'help' command
+ *
+ * Displays a message indicating that the help functionality is
+ * not yet implemented.
+ * Return: serves as a placeholder for when the help descriptions are added.
  */
 int _myhelp(info_t *info)
 {
 	char **arg_array;
 
 	arg_array = info->argv;
-	_puts("help call works. Function not yet implemented \n");
+	_puts("Help functionality is underway. Please check back later. \n");
 	if (0)
 		_puts(*arg_array); /* temp att_unused workaround */
 	return (0);
