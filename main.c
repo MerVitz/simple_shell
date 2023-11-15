@@ -1,15 +1,11 @@
 #include "shell.h"
 
 /**
- * main - initiates the simple shell program
- * @ac: the count of command-line arguments
- * @av: the array of command-line arguments
+ * main - entry point
+ * @ac: arg count
+ * @av: arg vector
  *
- * Initializes the shell's info structure and processes command-line arguments.
- * If a script file is provided, it attempts to open and read from it.
- * Initializes the shell environment, loads history, and starts the shell loop.
- * Return: Exits with appropriate status codes upon
- * encountering file access errors.
+ * Return: 0 on success, 1 on error
  */
 int main(int ac, char **av)
 {
@@ -30,11 +26,11 @@ int main(int ac, char **av)
 				exit(126);
 			if (errno == ENOENT)
 			{
-				puts(av[0]);
-				puts(": 0: Can't open ");
-				puts(av[1]);
-				putchar('\n');
-				putchar(BUF_FLUSH);
+				_eputs(av[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(av[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
 				exit(127);
 			}
 			return (EXIT_FAILURE);
@@ -42,7 +38,7 @@ int main(int ac, char **av)
 		info->readfd = fd;
 	}
 	populate_env_list(info);
-	load_history(info);
+	read_history(info);
 	hsh(info, av);
 	return (EXIT_SUCCESS);
 }
