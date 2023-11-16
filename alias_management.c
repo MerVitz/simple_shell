@@ -64,13 +64,10 @@ int set_alias(info_t *info, char *str)
 }
 
 /**
- * _myalias - handles alias creation, updating, and printing
- * @info: structure containing shell state, including the
- * alias list and argument vector
- *
- * Processes the alias-related commands, creating, updating,
- * or printing aliases based on the input arguments.
- * Return: 0 after processing the commands.
+ * _myalias - mimics the alias builtin (man alias)
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ *  Return: Always 0
  */
 int _myalias(info_t *info)
 {
