@@ -102,13 +102,10 @@ int _myalias(info_t *info)
 
 
 /**
- * print_alias - prints a formatted representation of an alias
- * @node: the list node containing the alias string
+ * print_alias - prints an alias string
+ * @node: the alias node
  *
- * Formats and prints an alias in the form 'name=value'.
- * If the node is NULL, returns 1.
- * Otherwise,
- * Return: 0 after printing the alias.
+ * Return: Always 0 on success, 1 on error
  */
 int print_alias(list_t *node)
 {
