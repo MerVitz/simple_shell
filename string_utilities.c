@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * replicate_string - duplicates the content of one string to another location
+ * _strcpy - duplicates the content of one string to another location
  * @dest: target location where the string will be copied
  * @src: source string to be copied
  *

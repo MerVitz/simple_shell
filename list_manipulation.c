@@ -83,7 +83,7 @@ size_t print_list(const list_t *h)
 }
 
 /**
- * find_node_prefix - locates a node where the string
+ * node_starts_with - locates a node where the string
  * begins with a specified prefix
  * @node: starting node for the search
  * @prefix: leading characters to match in the node's string
