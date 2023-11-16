@@ -1,6 +1,46 @@
 #include "shell.h"
 
 /**
+ * _myhistory - outputs the history list with line numbers
+ * @info: structure containing shell state, including the history list
+ *
+ * Iterates through the history list and prints each command
+ * with its corresponding line number.
+ * Return: 0 after printing the entire history list.
+ */
+int _myhistory(info_t *info)
+{
+	print_list(info->history);
+	return (0);
+}
+
+/**
+ * unset_alias - deletes an alias from the list of aliases
+ * @info: structure containing shell state, including the alias list
+ * @str: string that represents the alias to be removed
+ *
+ * Separates the alias name from its value and removes the alias
+ * from the list if found.
+ * Return: 0 on successful removal, 1 if the alias was not found
+ * or if an error occurred.
+ */
+int unset_alias(info_t *info, char *str)
+{
+	char *p, c;
+	int ret;
+
+	p = _strchr(str, '=');
+	if (!p)
+		return (1);
+	c = *p;
+	*p = 0;
+	ret = delete_node_at_index(&(info->alias),
+		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
+	*p = c;
+	return (ret);
+}
+
+/**
  * set_alias - creates a new alias or updates an existing one
  * @info: structure containing shell state, including the alias list
  * @str: string that represents the alias and its value
@@ -87,44 +127,5 @@ int print_alias(list_t *node)
 	return (1);
 }
 
-/**
- * _myhistory - outputs the history list with line numbers
- * @info: structure containing shell state, including the history list
- *
- * Iterates through the history list and prints each command
- * with its corresponding line number.
- * Return: 0 after printing the entire history list.
- */
-int _myhistory(info_t *info)
-{
-	print_list(info->history);
-	return (0);
-}
-
-/**
- * unset_alias - deletes an alias from the list of aliases
- * @info: structure containing shell state, including the alias list
- * @str: string that represents the alias to be removed
- *
- * Separates the alias name from its value and removes the alias
- * from the list if found.
- * Return: 0 on successful removal, 1 if the alias was not found
- * or if an error occurred.
- */
-int unset_alias(info_t *info, char *str)
-{
-	char *p, c;
-	int ret;
-
-	p = _strchr(str, '=');
-	if (!p)
-		return (1);
-	c = *p;
-	*p = 0;
-	ret = delete_node_at_index(&(info->alias),
-		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
-	*p = c;
-	return (ret);
-}
 
 
